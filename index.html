@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>测测你是三国里的谁 · 心智阶位</title>
+<style>
+  :root {
+    --ink: #22233A;
+    --night: #2A3466;
+    --night-2: #1F2852;
+    --paper: #FFFFFF;
+    --cinnabar: #E8453C;
+    --gamboge: #FFC93C;
+    --jade: #14A88A;
+    --muted: #6E6F86;
+    --group: #7C5CFF;
+    --group-soft: #E6DFFF;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { background: var(--night); }
+  body {
+    font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    color: var(--ink);
+    min-height: 100vh; min-height: 100dvh;
+    background-color: var(--night);
+    background-image:
+      radial-gradient(circle at 50% -10%, #3A4790 0, transparent 55%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cpath d='M20 70c0-9 7-15 15-15 2-8 9-13 17-13 9 0 16 6 17 15 7 0 12 5 12 13H20z' fill='none' stroke='%23ffffff' stroke-opacity='.06' stroke-width='2'/%3E%3Ccircle cx='96' cy='22' r='2' fill='%23ffffff' fill-opacity='.18'/%3E%3Ccircle cx='10' cy='108' r='1.5' fill='%23ffffff' fill-opacity='.14'/%3E%3C/svg%3E");
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container {
+    width: min(100%, 460px);
+    margin: 0 auto;
+    padding: max(16px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+    min-height: 100vh; min-height: 100dvh;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .card {
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    border-radius: 26px;
+    box-shadow: 6px 7px 0 var(--gamboge);
+    padding: 24px 20px;
+    position: relative;
+    animation: pop .38s cubic-bezier(.2,.9,.3,1.2) both;
+  }
+  @keyframes pop { from { opacity: 0; transform: translateY(14px) scale(.97); } to { opacity: 1; transform: none; } }
+  .hidden { display: none !important; }
+
+  /* ---------- 首页 ---------- */
+  .cast {
+    display: flex; justify-content: center; align-items: flex-end;
+    margin: -64px auto 6px; height: 118px;
+  }
+  .cast .fig { width: 92px; margin: 0 -14px; filter: drop-shadow(0 4px 0 rgba(34,35,58,.18)); }
+  .cast .fig:nth-child(odd) { transform: translateY(8px) rotate(-4deg); }
+  .cast .fig:nth-child(even) { transform: rotate(4deg); }
+  .cast .fig:nth-child(3) { width: 112px; z-index: 2; transform: translateY(-4px); }
+  .start-card { margin-top: 70px; text-align: center; padding-top: 18px; }
+  .kicker {
+    display: inline-block;
+    font-size: 13px; font-weight: 800;
+    color: #fff; background: var(--cinnabar);
+    border: 2.5px solid var(--ink); border-radius: 999px;
+    padding: 4px 12px; margin-bottom: 12px;
+    transform: rotate(-2deg);
+  }
+  h1 {
+    font-size: clamp(32px, 9.4vw, 42px);
+    line-height: 1.12; font-weight: 900;
+    letter-spacing: -.02em;
+    margin-bottom: 10px;
+  }
+  h1 .line2 { display: block; color: var(--cinnabar); -webkit-text-stroke: 0; }
+  .subtitle { color: var(--muted); font-size: 14.5px; line-height: 1.65; margin-bottom: 18px; }
+  .steps { display: flex; gap: 10px; margin-bottom: 20px; }
+  .step {
+    flex: 1; text-align: left;
+    border: 2.5px solid var(--ink); border-radius: 16px;
+    padding: 10px 12px; font-size: 12.5px; line-height: 1.45; color: var(--muted);
+  }
+  .step b { display: block; font-size: 15px; color: var(--ink); margin-bottom: 2px; }
+  .step:first-child { background: #FFF3CF; }
+  .step:last-child { background: #E3F6F0; }
+  .btn {
+    width: 100%; min-height: 56px;
+    background: var(--cinnabar); color: #fff;
+    border: 3px solid var(--ink); border-radius: 18px;
+    box-shadow: 0 5px 0 var(--ink);
+    font-size: 18px; font-weight: 900; letter-spacing: .04em;
+    cursor: pointer; touch-action: manipulation;
+    transition: transform .1s ease, box-shadow .1s ease;
+  }
+  .btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--ink); }
+  .btn:focus-visible, .option:focus-visible { outline: 3px solid var(--gamboge); outline-offset: 3px; }
+  .fineprint { font-size: 12px; color: var(--muted); margin-top: 14px; }
+
+  /* ---------- 答题 ---------- */
+  .q-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .q-badge {
+    width: 54px; height: 54px; flex: 0 0 auto;
+    border: 2.5px solid var(--ink); border-radius: 16px;
+    background: var(--group-soft);
+    display: grid; place-items: center; overflow: hidden;
+  }
+  .q-badge svg { width: 60px; height: 60px; margin-top: 8px; }
+  .q-badge .mystery { font-size: 28px; font-weight: 900; color: var(--ink); margin: 0; }
+  .q-meta { flex: 1; min-width: 0; }
+  .q-meta .phase { font-size: 12.5px; color: var(--muted); font-weight: 700; margin-bottom: 4px; }
+  .q-meta .count { font-size: 15px; font-weight: 900; }
+  .progress { height: 12px; border: 2.5px solid var(--ink); border-radius: 999px; overflow: hidden; background: #F1F0F6; margin-bottom: 22px; }
+  .progress-bar { height: 100%; background: var(--gamboge); border-right: 2.5px solid var(--ink); transition: width .3s cubic-bezier(.2,.8,.2,1); }
+  .progress-bar[style*="width: 0%"], .progress-bar[style*="width:0%"] { border-right: 0; }
+  .question { font-size: 20px; font-weight: 800; line-height: 1.5; margin-bottom: 20px; min-height: 60px; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    display: flex; align-items: center; gap: 12px;
+    min-height: 54px; padding: 12px 14px;
+    border: 2.5px solid var(--ink); border-radius: 16px;
+    background: #fff; box-shadow: 0 4px 0 var(--ink);
+    font-size: 15.5px; font-weight: 650; line-height: 1.4; text-align: left;
+    color: var(--ink); cursor: pointer; touch-action: manipulation; width: 100%;
+    font-family: inherit;
+    transition: transform .1s ease, box-shadow .1s ease, background .15s ease;
+  }
+  .option .key {
+    width: 28px; height: 28px; flex: 0 0 auto;
+    border: 2.5px solid var(--ink); border-radius: 9px;
+    display: grid; place-items: center; font-size: 13px; font-weight: 900;
+    background: #F1F0F6;
+  }
+  .option:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+  .option.selected { background: var(--gamboge); transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+  .option.selected .key { background: var(--ink); color: #fff; }
+  .fade { animation: fade .26s ease both; }
+  @keyframes fade { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: none; } }
+
+  /* ---------- 锁定页 ---------- */
+  .lock-card { text-align: center; }
+  .lock-fig { width: 210px; margin: -6px auto 2px; position: relative; }
+  .lock-fig .qm {
+    position: absolute; left: 50%; top: 46%; transform: translate(-50%,-50%);
+    font-size: 54px; font-weight: 900; color: #fff;
+    text-shadow: 0 0 0 var(--ink);
+  }
+  .lock-group {
+    display: inline-block; font-size: 13px; font-weight: 900;
+    padding: 4px 12px; border: 2.5px solid var(--ink); border-radius: 999px;
+    background: var(--group-soft); margin-bottom: 10px;
+  }
+  .lock-card h2 { font-size: 24px; font-weight: 900; margin-bottom: 8px; }
+  .lock-card p { color: var(--muted); font-size: 14.5px; line-height: 1.6; margin-bottom: 20px; }
+
+  /* ---------- 结果卡 ---------- */
+  .result-wrap { animation: pop .45s cubic-bezier(.2,.9,.3,1.2) both; }
+  .share-card {
+    position: relative; overflow: hidden;
+    background: #fff;
+    border: 3px solid var(--ink); border-radius: 28px;
+    box-shadow: 6px 7px 0 var(--gamboge);
+  }
+  .sc-top {
+    position: relative;
+    background: var(--group);
+    border-bottom: 3px solid var(--ink);
+    padding: 16px 18px 0;
+    text-align: center;
+    overflow: hidden;
+  }
+  .sc-top::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,.22) 1.4px, transparent 1.6px);
+    background-size: 14px 14px;
+  }
+  .sc-label {
+    position: relative; z-index: 1;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; font-weight: 800; color: #fff;
+  }
+  .sc-label .pill { background: var(--ink); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  .sc-fig { position: relative; z-index: 1; width: 230px; margin: 4px auto -6px; }
+  .sc-fig svg { display: block; width: 100%; height: auto; }
+  .sc-body { position: relative; z-index: 3; padding: 16px 18px 16px; }
+  .who { text-align: center; }
+  .who .mbti { font-size: 13px; font-weight: 900; letter-spacing: .12em; color: var(--muted); }
+  .who .name { font-size: 40px; font-weight: 900; line-height: 1.15; letter-spacing: .04em; }
+  .who .title { font-size: 15px; font-weight: 800; color: var(--group); margin-top: 2px; }
+  .quote {
+    position: relative; margin: 14px auto 12px; max-width: 300px;
+    background: #F6F5FA; border: 2.5px solid var(--ink); border-radius: 16px;
+    padding: 9px 14px; font-size: 15px; font-weight: 800; text-align: center;
+  }
+  .quote::before {
+    content: ""; position: absolute; top: -10px; left: 50%; margin-left: -9px;
+    border: 9px solid transparent; border-top: 0; border-bottom: 10px solid var(--ink);
+  }
+  .quote::after {
+    content: ""; position: absolute; top: -6px; left: 50%; margin-left: -6px;
+    border: 6px solid transparent; border-top: 0; border-bottom: 7px solid #F6F5FA;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; margin-bottom: 16px; }
+  .tag { font-size: 12.5px; font-weight: 800; padding: 4px 10px; border-radius: 999px; border: 2px solid var(--ink); background: var(--group-soft); }
+  .stats { display: flex; gap: 10px; margin-bottom: 14px; }
+  .stat { flex: 1; border: 2.5px solid var(--ink); border-radius: 18px; padding: 12px 10px; text-align: center; }
+  .stat .k { font-size: 12px; color: var(--muted); font-weight: 700; margin-bottom: 4px; }
+  .stat .v { font-size: 30px; font-weight: 900; line-height: 1.1; }
+  .stat .v small { font-size: 14px; }
+  .stat.tier { background: var(--ink); color: #fff; transform: rotate(-2deg); }
+  .stat.tier .k { color: #B7B8D0; }
+  .stat.tier .nick { font-size: 12.5px; font-weight: 800; color: var(--gamboge); margin-top: 2px; }
+  .meter { height: 10px; border: 2px solid var(--ink); border-radius: 999px; background: #F1F0F6; overflow: hidden; margin-top: 8px; }
+  .meter i { display: block; height: 100%; width: 0; background: var(--gamboge); transition: width .9s cubic-bezier(.2,.8,.2,1) .2s; }
+  .analysis { font-size: 14px; line-height: 1.7; color: #3C3D55; }
+  .analysis h3 {
+    display: inline-block; font-size: 13px; font-weight: 900;
+    background: var(--ink); color: #fff; padding: 2px 10px; border-radius: 8px;
+    margin: 12px 0 6px;
+  }
+  .analysis ul { margin: 0 0 4px 18px; }
+  .analysis li { margin-bottom: 3px; }
+  .share-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 14px; padding-top: 10px; border-top: 2px dashed #CFCFDC;
+    font-size: 11px; color: #9A9BB0;
+  }
+  .share-brand { font-weight: 900; color: var(--ink); font-size: 12px; }
+  .watermark { position: absolute; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
+  .watermark span {
+    position: absolute; font-size: 15px; font-weight: 900; letter-spacing: .18em;
+    color: rgba(34,35,58,.06); transform: rotate(-22deg); white-space: nowrap; user-select: none;
+  }
+  .after { margin-top: 18px; display: flex; flex-direction: column; gap: 12px; }
+  .hint { text-align: center; color: #C9CBE8; font-size: 13px; }
+  .btn.ghost { background: #fff; color: var(--ink); font-size: 16px; min-height: 50px; }
+  .gallery { padding: 18px 14px; }
+  .gallery h3 { font-size: 17px; font-weight: 900; text-align: center; margin-bottom: 4px; }
+  .gallery p { font-size: 12.5px; color: var(--muted); text-align: center; margin-bottom: 12px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .cell { text-align: center; border-radius: 14px; padding: 4px 0 6px; }
+  .cell svg { width: 100%; height: auto; display: block; }
+  .cell .n { font-size: 12.5px; font-weight: 900; }
+  .cell .t { font-size: 10.5px; color: var(--muted); font-weight: 700; letter-spacing: .04em; }
+  .cell.me { background: var(--gamboge); border: 2.5px solid var(--ink); }
+
+  @media (max-width: 370px) {
+    .container { padding-left: 12px; padding-right: 12px; }
+    .card { padding: 20px 16px; }
+    .question { font-size: 18px; }
+    .cast .fig { width: 80px; }
+    .cast .fig:nth-child(3) { width: 98px; }
+    .who .name { font-size: 34px; }
+    .sc-fig { width: 200px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 首页 -->
+  <div id="startScreen" class="card start-card">
+    <div class="cast" id="cast"></div>
+    <span class="kicker">16 型人格 × 三国</span>
+    <h1>测测你是<span class="line2">三国里的谁</span></h1>
+    <p class="subtitle">同样是 INTJ，有人是运筹帷幄的卧龙，有人还在睡大觉。测出你的三国本命，顺便看看你的心智阶位。</p>
+    <div class="steps">
+      <div class="step"><b>8 题</b>锁定你的三国本命</div>
+      <div class="step"><b>12 题</b>测出你现在几阶</div>
+    </div>
+    <button class="btn" onclick="startTypePhase()">开始测试</button>
+    <p class="fineprint">约 3 分钟 · 结果卡可截图发朋友圈</p>
+  </div>
+
+  <!-- 第一阶段：人格定位 -->
+  <div id="typeScreen" class="card hidden">
+    <div class="q-head">
+      <div class="q-badge"><span class="mystery">?</span></div>
+      <div class="q-meta"><div class="phase">第一关 · 本命人物定位中</div><div class="count" id="typeCounter">第 1 / 8 题</div></div>
+    </div>
+    <div class="progress"><div class="progress-bar" id="typeProgressBar" style="width:0%"></div></div>
+    <div class="question" id="typeQuestionText"></div>
+    <div class="options" id="typeOptions"></div>
+  </div>
+
+  <!-- 锁定页 -->
+  <div id="lockScreen" class="card lock-card hidden">
+    <div class="lock-fig" id="lockFig"></div>
+    <span class="lock-group" id="lockGroup">谋士营</span>
+    <h2>你的三国本命已锁定</h2>
+    <p>是谁先保密。再答 12 题，同时揭晓 TA 是谁、你现在是“初出茅庐”还是“名震天下”。</p>
+    <button class="btn" onclick="startTest()">继续闯关</button>
+  </div>
+
+  <!-- 第二阶段：心智阶位 -->
+  <div id="questionScreen" class="card hidden">
+    <div class="q-head">
+      <div class="q-badge" id="qBadge"></div>
+      <div class="q-meta"><div class="phase">第二关 · 心智阶位</div><div class="count" id="questionCounter">第 1 / 12 题</div></div>
+    </div>
+    <div class="progress"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+    <div class="question" id="questionText"></div>
+    <div class="options" id="options"></div>
+  </div>
+
+  <!-- 结果 -->
+  <div id="resultScreen" class="result-wrap hidden">
+    <div class="share-card" id="shareCard">
+      <div class="watermark" id="watermark"></div>
+      <div class="sc-top">
+        <div class="sc-label"><span class="pill">我的三国本命</span><span id="groupName">谋士营</span></div>
+        <div class="sc-fig" id="resultFig"></div>
+      </div>
+      <div class="sc-body">
+        <div class="who">
+          <div class="mbti" id="resultType">INTJ</div>
+          <div class="name" id="resultName">诸葛亮</div>
+          <div class="title" id="resultTitle">卧龙</div>
+        </div>
+        <div class="quote" id="resultQuote"></div>
+        <div class="tags" id="resultTags"></div>
+        <div class="stats">
+          <div class="stat">
+            <div class="k">心智成熟度</div>
+            <div class="v" id="resultScore">0<small>分</small></div>
+            <div class="meter"><i id="scoreMeter"></i></div>
+          </div>
+          <div class="stat tier">
+            <div class="k">当前阶位</div>
+            <div class="v" id="resultTier">中阶</div>
+            <div class="nick" id="tierNick">独当一面</div>
+          </div>
+        </div>
+        <div class="analysis" id="resultAnalysis"></div>
+        <div class="share-footer">
+          <span id="resultArchive">档案编号</span>
+          <span class="share-brand">熊吉大王</span>
+        </div>
+      </div>
+    </div>
+    <div class="after">
+      <p class="hint">截图发给朋友，看看 TA 是三国里的谁</p>
+      <div class="card gallery">
+        <h3>16 位三国本命</h3>
+        <p>黄色那个是你，看看朋友们会是谁</p>
+        <div class="grid" id="gallery"></div>
+      </div>
+      <button class="btn ghost" onclick="location.reload()">重新测试</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== 16 位原创 Q 版三国人物（纯 SVG 绘制，基于传统戏曲/演义形象）===== */
+const INK = "#22233A";
+const GROUP = {
+  NT: { main: "#7C5CFF", soft: "#E6DFFF", name: "谋士营" },
+  NF: { main: "#FF5C8A", soft: "#FFE0EA", name: "名士阁" },
+  SJ: { main: "#14A88A", soft: "#D2F4EA", name: "镇守营" },
+  SP: { main: "#FF8A00", soft: "#FFE9CC", name: "先锋营" }
+};
+function groupOf(t) {
+  if (t[1] === "N") return t[2] === "T" ? "NT" : "NF";
+  return t[3] === "J" ? "SJ" : "SP";
+}
+
+const SKIN = "#FFE0C7";
+const FIGURES = {
+  INTJ: { name: "诸葛亮", title: "卧龙", tags: ["走一步看十步", "计划控", "锦囊妙计本人"], quote: "先想清楚，再一击即中", skin: SKIN, hair: "#2B2438", robe: "#EEF2F8", trim: "#3E4C6E", hat: "lunjin", beard: "mustache", prop: "featherfan" },
+  INTP: { name: "司马懿", title: "冢虎", tags: ["极致隐忍", "脑内推演", "后发制人"], quote: "不急，等我想明白", skin: SKIN, hair: "#2B2438", robe: "#5B4A80", trim: "#C9B8F0", hat: "guan", hatColor: "#2B2438", beard: "goatee", prop: "scroll" },
+  ENTJ: { name: "曹操", title: "枭雄", tags: ["天生领导", "行动派", "气场两米八"], quote: "目标定了，就往前推", skin: SKIN, hair: "#2B2438", robe: "#2F3A5E", trim: "#F2C14E", hat: "guan", hatColor: "#22233A", beard: "goateeMus", brows: "sharp", prop: "flag" },
+  ENTP: { name: "郭嘉", title: "鬼才", tags: ["点子永动机", "不按套路出牌", "嘴快脑更快"], quote: "规矩？先拆了再说", skin: SKIN, hair: "#3A2C3F", robe: "#3FA7A3", trim: "#E9F7F5", hat: "messy", prop: "jinnang" },
+  INFJ: { name: "荀彧", title: "王佐之才", tags: ["看透不说透", "理想主义", "自带清香"], quote: "做事，先问初心", skin: SKIN, hair: "#2B2438", robe: "#9A4D63", trim: "#F6DCE4", hat: "guan", hatColor: "#4A2232", beard: "mustache", prop: "censer" },
+  INFP: { name: "曹植", title: "才高八斗", tags: ["文艺担当", "内心戏丰富", "emo也是浪漫"], quote: "情绪，也能写成诗", skin: SKIN, hair: "#2B2438", robe: "#BBA6E6", trim: "#FFFFFF", hat: "bunRibbon", ribbon: "#8E7BD6", prop: "brush" },
+  ENFJ: { name: "刘备", title: "仁德之主", tags: ["人格魅力拉满", "兄弟遍天下", "天生班长"], quote: "人心齐，事就成", skin: SKIN, hair: "#2B2438", robe: "#E5B23F", trim: "#2F7D4F", hat: "bun", band: "#2F7D4F", beard: "mustache", bigEars: true, prop: "peach" },
+  ENFP: { name: "周瑜", title: "美周郎", tags: ["才貌双全", "灵感爆棚", "社交高手"], quote: "曲子弹错一个音，我都听得出", skin: SKIN, hair: "#2B2438", robe: "#F2735E", trim: "#FFF1E8", hat: "headband", band: "#C8302F", prop: "guqin" },
+  ISTJ: { name: "关羽", title: "武圣", tags: ["说到做到", "一诺千金", "原则感超强"], quote: "答应的事，一定办到", skin: "#E2574C", hair: "#1E1E2A", robe: "#2E8B57", trim: "#B8E3C8", hat: "futou", beard: "long", brows: "thick", prop: "guandao" },
+  ISFJ: { name: "赵云", title: "常胜将军", tags: ["靠谱守护者", "默默扛事", "安全感满分"], quote: "有我在，放心", skin: SKIN, hair: "#2B2438", robe: "#F2F4F8", trim: "#3B6FD1", hat: "helmet", armor: "#C9D2E0", prop: "spear" },
+  ESTJ: { name: "孙权", title: "江东之主", tags: ["稳住大局", "管理达人", "效率至上"], quote: "守得住，才走得远", skin: SKIN, hair: "#2B2438", robe: "#C23B3B", trim: "#F2C14E", hat: "guan", hatColor: "#E0A82E", beard: "purple", prop: "seal" },
+  ESFJ: { name: "鲁肃", title: "和事佬", tags: ["群聊调解员", "照顾所有人", "人缘超好"], quote: "大家坐下来，好好谈", skin: SKIN, hair: "#2B2438", robe: "#9C8452", trim: "#FFF4DC", hat: "bun", band: "#5E4B2A", beard: "goatee", prop: "tea" },
+  ISTP: { name: "黄忠", title: "神射手", tags: ["老当益壮", "话少事办得漂亮", "冷静出手"], quote: "少说两句，看我出手", skin: SKIN, hair: "#EDEDF2", robe: "#C9782E", trim: "#FFE6C2", hat: "bun", band: "#C8302F", beard: "longWhite", armor: "#E3B655", prop: "bow" },
+  ISFP: { name: "貂蝉", title: "闭月", tags: ["审美天花板", "温柔有锋芒", "活在当下"], quote: "美，也是一种力量", skin: SKIN, hair: "#2B2438", robe: "#F49AC1", trim: "#FFFFFF", hat: "lady", prop: "moon" },
+  ESTP: { name: "吕布", title: "飞将", tags: ["战力天花板", "说冲就冲", "刺激爱好者"], quote: "想那么多干嘛，上！", skin: SKIN, hair: "#2B2438", robe: "#C8302F", trim: "#F2C14E", hat: "feathers", brows: "angry", armor: "#F2C14E", prop: "halberd" },
+  ESFP: { name: "张飞", title: "燕人", tags: ["嗓门担当", "豪爽仗义", "气氛组组长"], quote: "痛快！就这么定了！", skin: "#E9B48C", hair: "#1E1E2A", robe: "#3A3B4C", trim: "#E8454F", hat: "spiky", beard: "spiky", brows: "thick", prop: "roar" }
+};
+
+const TIER_STYLE = {
+  "未觉醒": { nick: "还在睡大觉", eyes: "sleep" },
+  "初阶": { nick: "初出茅庐", eyes: "drowsy" },
+  "中阶": { nick: "独当一面", eyes: "open" },
+  "高阶": { nick: "名震天下", eyes: "sparkle" }
+};
+
+const st = (w = 4) => `stroke="${INK}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"`;
+
+/* ---------- 头饰：back 层画在头后面，front 层画在头发上 ---------- */
+function hatBack(f) {
+  const h = f.hair;
+  switch (f.hat) {
+    case "bun": case "guan": case "bunRibbon":
+      return `<circle cx="100" cy="46" r="15" fill="${h}" ${st()}/>` +
+        (f.hat === "bunRibbon" ? `<path d="M110 52 Q136 50 150 70 Q132 64 118 62 Z" fill="${f.ribbon}" ${st(3)}/><path d="M112 56 Q130 70 132 92 Q122 78 110 66 Z" fill="${f.ribbon}" ${st(3)}/>` : "");
+    case "headband":
+      return `<path d="M60 100 C54 140 64 160 80 164 L120 164 C136 160 146 140 140 100 Z" fill="${h}" ${st()}/>
+              <path d="M140 84 Q168 88 174 112 Q160 102 146 98 Z" fill="${f.band}" ${st(3)}/>`;
+    case "lady":
+      return `<path d="M50 100 C42 146 58 168 72 170 L128 170 C142 168 158 146 150 100 Z" fill="${h}" ${st()}/>
+              <circle cx="70" cy="54" r="15" fill="${h}" ${st()}/><circle cx="130" cy="54" r="15" fill="${h}" ${st()}/>`;
+    case "messy":
+      return `<path d="M58 72 L52 52 L72 62 L74 40 L90 56 L100 34 L110 56 L126 40 L128 62 L148 52 L142 72 Z" fill="${h}" ${st()}/>`;
+    case "spiky":
+      return `<path d="M54 80 L40 62 L62 64 L56 40 L78 54 L82 30 L98 50 L110 28 L118 52 L138 36 L136 60 L160 56 L146 80 Z" fill="${h}" ${st()}/>`;
+    default: return "";
+  }
+}
+
+function hairCap(f) {
+  if (f.hat === "helmet" || f.hat === "futou") return "";
+  return `<path d="M52 104 C50 64 72 52 100 52 C128 52 150 64 148 104 C142 86 128 78 112 80 Q100 86 88 80 C72 78 58 86 52 104 Z" fill="${f.hair}" ${st()}/>`;
+}
+
+function hatFront(f) {
+  switch (f.hat) {
+    case "lunjin":
+      return `<path d="M52 90 C52 52 76 38 100 38 C124 38 148 52 148 90 C130 76 70 76 52 90 Z" fill="${f.trim}" ${st()}/>
+              <path d="M100 42 L100 78 M78 48 L82 80 M122 48 L118 80" stroke="#6B7BA3" stroke-width="3.5" stroke-linecap="round"/>`;
+    case "guan":
+      return `<rect x="84" y="28" width="32" height="26" rx="6" fill="${f.hatColor}" ${st()}/>
+              <path d="M72 40 L128 40" stroke="#F2C14E" stroke-width="5" stroke-linecap="round"/>
+              <circle cx="72" cy="40" r="4" fill="#F2C14E" ${st(2.5)}/>`;
+    case "bun": return `<rect x="88" y="52" width="24" height="8" rx="3" fill="${f.band}" ${st(3)}/>`;
+    case "bunRibbon": return `<rect x="88" y="52" width="24" height="8" rx="3" fill="${f.ribbon}" ${st(3)}/>`;
+    case "headband": return `<path d="M52 90 Q100 70 148 90" fill="none" stroke="${f.band}" stroke-width="8" stroke-linecap="round"/>`;
+    case "lady":
+      return `<path d="M128 52 L150 40" stroke="#F2C14E" stroke-width="4" stroke-linecap="round"/>
+              ${[0, 72, 144, 216, 288].map(a => `<circle cx="${(136 + Math.cos(a * Math.PI / 180) * 7).toFixed(1)}" cy="${(64 + Math.sin(a * Math.PI / 180) * 7).toFixed(1)}" r="6" fill="#FF8FB8" ${st(2.5)}/>`).join("")}
+              <circle cx="136" cy="64" r="4" fill="#FFD84D"/>
+              <path d="M150 42 L152 58" stroke="#F2C14E" stroke-width="2.5"/><circle cx="152" cy="61" r="3.5" fill="#FF5C8A"/>`;
+    case "futou":
+      return `<path d="M50 98 C48 52 74 38 100 38 C126 38 152 52 150 98 C140 80 60 80 50 98 Z" fill="#2E8B57" ${st()}/>
+              <path d="M58 82 Q100 66 142 82" fill="none" stroke="#1F6B41" stroke-width="5"/>
+              <circle cx="100" cy="64" r="8" fill="#F2C14E" ${st(3)}/>`;
+    case "helmet":
+      return `<path d="M100 38 L100 22" stroke="${INK}" stroke-width="4"/>
+              <path d="M100 24 C84 18 84 2 100 2 C116 2 116 18 100 24 Z" fill="#E8454F" ${st(3.5)}/>
+              <path d="M46 100 C44 52 72 38 100 38 C128 38 156 52 154 100 L144 104 C140 86 126 78 100 78 C74 78 60 86 56 104 Z" fill="${f.armor}" ${st()}/>
+              <path d="M56 86 Q100 70 144 86" fill="none" stroke="${f.trim}" stroke-width="6" stroke-linecap="round"/>
+              <path d="M74 56 Q86 48 98 48" stroke="#FFF" stroke-width="4" stroke-linecap="round" fill="none" opacity=".8"/>`;
+    case "feathers":
+      return `<path d="M86 64 C72 36 54 18 26 8" fill="none" stroke="#B5532E" stroke-width="8" stroke-linecap="round"/>
+              <path d="M86 64 C72 36 54 18 26 8" fill="none" stroke="#FFF2D9" stroke-width="8" stroke-dasharray="3 8" stroke-linecap="butt"/>
+              <path d="M114 64 C128 36 146 18 174 8" fill="none" stroke="#B5532E" stroke-width="8" stroke-linecap="round"/>
+              <path d="M114 64 C128 36 146 18 174 8" fill="none" stroke="#FFF2D9" stroke-width="8" stroke-dasharray="3 8" stroke-linecap="butt"/>
+              <path d="M54 84 Q100 58 146 84 L144 96 Q100 72 56 96 Z" fill="#F2C14E" ${st(3.5)}/>
+              <path d="M92 72 L100 58 L108 72 L100 80 Z" fill="#E8454F" ${st(3)}/>`;
+    case "spiky":
+      return `<path d="M52 92 Q100 72 148 92" fill="none" stroke="#22233A" stroke-width="7" stroke-linecap="round"/>`;
+    default: return "";
+  }
+}
+
+/* ---------- 身体 ---------- */
+function body(f) {
+  let s = `<path d="M48 200 Q48 150 100 146 Q152 150 152 200 Z" fill="${f.robe}" ${st()}/>`;
+  s += `<path d="M82 150 L114 200" stroke="${f.trim}" stroke-width="9" stroke-linecap="round"/>
+        <path d="M118 150 L101 176" stroke="${f.trim}" stroke-width="9" stroke-linecap="round"/>`;
+  if (f.armor) s += `<circle cx="100" cy="182" r="11" fill="${f.armor}" ${st(3)}/><circle cx="97" cy="179" r="3" fill="#FFF" opacity=".8"/>`;
+  s += `<path d="M52 196 L148 196" stroke="${INK}" stroke-width="4"/>`;
+  // left sleeve
+  s += `<ellipse cx="58" cy="176" rx="12" ry="17" transform="rotate(18 58 176)" fill="${f.robe}" ${st()}/>`;
+  return s;
+}
+
+function ears(f) {
+  if (f.hat === "helmet") return "";
+  if (f.bigEars) return `<ellipse cx="50" cy="114" rx="9" ry="18" fill="${f.skin}" ${st()}/><ellipse cx="150" cy="114" rx="9" ry="18" fill="${f.skin}" ${st()}/>`;
+  return `<circle cx="52" cy="108" r="9" fill="${f.skin}" ${st()}/><circle cx="148" cy="108" r="9" fill="${f.skin}" ${st()}/>`;
+}
+
+/* ---------- 五官 ---------- */
+function brows(f, mode) {
+  if (mode === "sleep") return "";
+  const c = f.hair === "#EDEDF2" ? "#9C9CAA" : INK;
+  switch (f.brows) {
+    case "thick": return `<path d="M70 90 L92 94" stroke="${c}" stroke-width="7" stroke-linecap="round"/><path d="M130 90 L108 94" stroke="${c}" stroke-width="7" stroke-linecap="round"/>`;
+    case "angry": return `<path d="M72 88 L92 96" stroke="${c}" stroke-width="5" stroke-linecap="round"/><path d="M128 88 L108 96" stroke="${c}" stroke-width="5" stroke-linecap="round"/>`;
+    case "sharp": return `<path d="M72 92 Q82 86 93 92" stroke="${c}" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M128 92 Q118 86 107 92" stroke="${c}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+    default: return `<path d="M74 92 Q82 88 90 91" stroke="${c}" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M126 92 Q118 88 110 91" stroke="${c}" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
+  }
+}
+
+function eye(x, y, mode) {
+  if (mode === "sleep") return `<path d="M${x - 8} ${y} Q${x} ${y + 7} ${x + 8} ${y}" fill="none" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>`;
+  if (mode === "drowsy") return `<ellipse cx="${x}" cy="${y + 2}" rx="6.5" ry="4" fill="${INK}"/><path d="M${x - 9} ${y - 3} L${x + 9} ${y - 3}" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/>`;
+  if (mode === "open") return `<circle cx="${x}" cy="${y}" r="7.5" fill="${INK}"/><circle cx="${x + 2.5}" cy="${y - 2.5}" r="2.6" fill="#FFF"/>`;
+  return `<circle cx="${x}" cy="${y}" r="9" fill="${INK}"/>
+    <path d="M${x + 2} ${y - 7} l1.6 3.4 3.4 1.6 -3.4 1.6 -1.6 3.4 -1.6 -3.4 -3.4 -1.6 3.4 -1.6 z" fill="#FFF"/>
+    <circle cx="${x - 3}" cy="${y + 3}" r="1.6" fill="#FFF"/>`;
+}
+
+function beard(f) {
+  const h = f.hair;
+  const mus = (c) => `<path d="M86 119 Q93 113 99 117 M101 117 Q107 113 114 119" stroke="${c}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+  switch (f.beard) {
+    case "mustache": return mus(h);
+    case "goatee": return `<path d="M95 131 L100 144 L105 131 Z" fill="${h}" ${st(2.5)}/>`;
+    case "goateeMus": return mus(h) + `<path d="M95 131 L100 146 L105 131 Z" fill="${h}" ${st(2.5)}/>`;
+    case "purple": return mus("#7A4FB8") + `<path d="M92 130 Q100 150 108 130 Z" fill="#8E5CD0" ${st(2.5)}/>`;
+    case "long":
+    case "longWhite": {
+      const c = f.beard === "long" ? h : "#F4F4F8";
+      const ln = f.beard === "long" ? "#4A4A5E" : "#C4C4D2";
+      return `<path d="M70 114 C68 150 86 178 100 196 C114 178 132 150 130 114 C120 130 110 134 100 134 C90 134 80 130 70 114 Z" fill="${c}" ${st()}/>
+              <path d="M88 144 Q92 164 98 178 M112 144 Q108 164 102 178" stroke="${ln}" stroke-width="2.5" fill="none" stroke-linecap="round"/>` + mus(c);
+    }
+    case "spiky":
+      return `<path d="M64 110 L62 132 L74 128 L74 148 L86 138 L92 158 L100 142 L108 158 L114 138 L126 148 L126 128 L138 132 L136 110 C126 128 112 134 100 134 C88 134 74 128 64 110 Z" fill="${h}" ${st()}/>`;
+    default: return "";
+  }
+}
+
+function face(f, tier) {
+  const mode = TIER_STYLE[tier].eyes;
+  let s = brows(f, mode) + eye(82, 104, mode) + eye(118, 104, mode);
+  s += `<ellipse cx="68" cy="120" rx="8" ry="5" fill="#FF7FA6" opacity=".45"/><ellipse cx="132" cy="120" rx="8" ry="5" fill="#FF7FA6" opacity=".45"/>`;
+  s += beard(f);
+  const my = 123;
+  const mc = f.skin === "#E2574C" ? "#5A1414" : INK;
+  if (mode === "sleep") s += `<ellipse cx="100" cy="${my + 2}" rx="3.5" ry="4" fill="${mc}"/>`;
+  else if (mode === "drowsy") s += `<path d="M94 ${my + 2} L106 ${my + 2}" stroke="${mc}" stroke-width="3.5" stroke-linecap="round"/>`;
+  else if (mode === "open") s += `<path d="M92 ${my} Q100 ${my + 9} 108 ${my}" fill="none" stroke="${mc}" stroke-width="3.5" stroke-linecap="round"/>`;
+  else s += `<path d="M89 ${my - 1} Q100 ${my + 17} 111 ${my - 1} Z" fill="${mc}" ${st(3)}/><ellipse cx="100" cy="${my + 7}" rx="5" ry="3" fill="#FF7A9C"/>`;
+  return s;
+}
+
+/* ---------- 道具（长兵器在手臂后面，小道具在手里） ---------- */
+function pole(x1, y1, x2, y2, c = "#8A5A3C") {
+  return `<path d="M${x1} ${y1} L${x2} ${y2}" stroke="${INK}" stroke-width="9" stroke-linecap="round"/>
+          <path d="M${x1} ${y1} L${x2} ${y2}" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`;
+}
+function propBack(f) {
+  switch (f.prop) {
+    case "guandao":
+      return pole(150, 198, 176, 54) + `<path d="M174 30 C198 42 200 80 176 96 C184 74 182 52 174 30 Z" fill="#DCE3EC" ${st(3.5)}/>
+             <path d="M178 46 Q188 60 182 78" stroke="#2E8B57" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+             <circle cx="176" cy="96" r="6" fill="#E8454F" ${st(3)}/>`;
+    case "spear":
+      return pole(150, 198, 178, 44) + `<path d="M180 14 L188 44 L170 42 Z" fill="#DCE3EC" ${st(3.5)}/>
+             <path d="M178 44 C164 48 166 64 178 62 C190 64 192 48 178 44 Z" fill="#E8454F" ${st(3)}/>`;
+    case "halberd":
+      return pole(150, 198, 176, 50) + `<path d="M178 14 L186 46 L170 44 Z" fill="#DCE3EC" ${st(3.5)}/>
+             <path d="M170 50 C154 46 150 62 160 72 C160 62 164 56 172 56 Z" fill="#F2C14E" ${st(3)}/>
+             <path d="M184 52 C198 54 200 70 190 78 C190 68 186 62 180 60 Z" fill="#F2C14E" ${st(3)}/>`;
+    case "bow":
+      return `<path d="M170 96 Q204 146 170 196" fill="none" stroke="#8A5A3C" stroke-width="7" stroke-linecap="round"/>
+              <path d="M170 96 Q204 146 170 196" fill="none" stroke="${INK}" stroke-width="2" opacity=".0"/>
+              <path d="M170 96 L170 196" stroke="${INK}" stroke-width="2"/>
+              <path d="M138 146 L196 146" stroke="#8A5A3C" stroke-width="4"/><path d="M196 146 L186 140 L186 152 Z" fill="#DCE3EC" ${st(2.5)}/>`;
+    default: return "";
+  }
+}
+
+function propFront(f) {
+  const hand = `<circle cx="156" cy="160" r="8" fill="${f.skin}" ${st(3.5)}/>`;
+  let p = "";
+  switch (f.prop) {
+    case "featherfan":
+      p = `<path d="M160 160 L162 140" stroke="#8A5A3C" stroke-width="5" stroke-linecap="round"/>
+           <path d="M162 142 C142 132 140 104 162 94 C184 104 182 132 162 142 Z" fill="#FFFFFF" ${st(3.5)}/>
+           <path d="M162 140 L162 100 M162 138 L150 110 M162 138 L174 110" stroke="#C8D0E0" stroke-width="2.5"/>`; break;
+    case "scroll":
+      p = `<g transform="rotate(-18 166 146)"><rect x="152" y="128" width="28" height="34" fill="#F6E7C4" ${st(3)}/>
+           <rect x="148" y="122" width="36" height="9" rx="4.5" fill="#8A5A3C" ${st(3)}/><rect x="148" y="160" width="36" height="9" rx="4.5" fill="#8A5A3C" ${st(3)}/>
+           <path d="M158 138 L174 138 M158 145 L174 145 M158 152 L168 152" stroke="${INK}" stroke-width="2" opacity=".6"/></g>`; break;
+    case "flag":
+      p = pole(154, 190, 160, 104) + `<path d="M161 106 L194 108 L192 140 L159 138 Z" fill="#F2C14E" ${st(3)}/>
+           <text x="176" y="131" text-anchor="middle" font-size="19" font-weight="900" fill="#C8302F" font-family="PingFang SC, Microsoft YaHei, sans-serif">令</text>`; break;
+    case "jinnang":
+      p = `<path d="M152 148 Q144 178 166 180 Q188 178 180 148 Z" fill="#E8454F" ${st(3.5)}/>
+           <path d="M150 146 Q166 138 182 146" fill="none" stroke="#F2C14E" stroke-width="4" stroke-linecap="round"/>
+           <path d="M166 156 L172 164 L166 172 L160 164 Z" fill="#F2C14E" ${st(2)}/>`; break;
+    case "censer":
+      p = `<path d="M148 156 Q150 178 166 178 Q182 178 184 156 Z" fill="#C99A4A" ${st(3.5)}/>
+           <path d="M154 178 L152 186 M178 178 L180 186" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>
+           <path d="M160 150 q-7 -9 0 -18 q7 -9 0 -18 M172 150 q-6 -8 0 -16" stroke="#B9A8E8" stroke-width="3.5" fill="none" stroke-linecap="round"/>`; break;
+    case "brush":
+      p = `<path d="M150 176 L176 126" stroke="#8A5A3C" stroke-width="7" stroke-linecap="round"/>
+           <path d="M174 130 Q180 112 192 108 Q190 124 180 134 Z" fill="${INK}"/>
+           <circle cx="186" cy="152" r="4" fill="${INK}"/><circle cx="192" cy="142" r="2.5" fill="${INK}"/>`; break;
+    case "peach":
+      p = `<path d="M154 166 Q166 140 186 126 M168 146 Q178 146 186 154" stroke="#7A4F2E" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+           ${[[186, 124], [170, 138], [188, 154]].map(([x, y]) => [0, 72, 144, 216, 288].map(a => `<circle cx="${(x + Math.cos(a * Math.PI / 180) * 6).toFixed(1)}" cy="${(y + Math.sin(a * Math.PI / 180) * 6).toFixed(1)}" r="5" fill="#FFB3CC" ${st(2)}/>`).join("") + `<circle cx="${x}" cy="${y}" r="3" fill="#FF5C8A"/>`).join("")}`; break;
+    case "guqin":
+      p = `<g transform="rotate(-38 168 150)"><rect x="132" y="140" width="76" height="20" rx="8" fill="#7A4F2E" ${st(3.5)}/>
+           <path d="M140 146 L200 146 M140 151 L200 151 M140 156 L200 156" stroke="#F6E7C4" stroke-width="1.6"/>
+           <circle cx="196" cy="150" r="3" fill="#F2C14E"/></g>`; break;
+    case "seal":
+      p = `<rect x="148" y="150" width="30" height="26" rx="4" fill="#F2C14E" ${st(3.5)}/>
+           <path d="M152 150 Q163 128 174 150 Z" fill="#E0A82E" ${st(3)}/>
+           <rect x="148" y="174" width="30" height="7" fill="#C8302F" ${st(3)}/>`; break;
+    case "tea":
+      p = `<path d="M146 152 L178 152 L174 180 L150 180 Z" fill="#FFFFFF" ${st(3.5)}/>
+           <path d="M150 162 L174 162" stroke="#14A88A" stroke-width="4"/>
+           <path d="M156 144 q-5 -7 0 -14 M168 144 q-5 -7 0 -14" stroke="#B5A9C9" stroke-width="3" fill="none" stroke-linecap="round"/>`; break;
+    case "moon":
+      p = `<path d="M182 104 A24 24 0 1 1 158 138 A18 18 0 1 0 182 104 Z" fill="#FFE36E" ${st(3.5)}/>
+           <path d="M188 150 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2 z" fill="#FFE36E"/>`; break;
+    case "roar":
+      p = `<path d="M144 112 Q144 96 162 96 L182 96 Q198 96 198 112 L198 124 Q198 140 182 140 L172 140 L158 152 L162 140 Q144 140 144 124 Z" fill="#FFFFFF" ${st(3.5)}/>
+           <text x="171" y="128" text-anchor="middle" font-size="22" font-weight="900" fill="#C8302F" font-family="PingFang SC, Microsoft YaHei, sans-serif">吼!</text>`; break;
+  }
+  const arm = `<ellipse cx="144" cy="174" rx="12" ry="17" transform="rotate(-28 144 174)" fill="${f.robe}" ${st()}/>`;
+  return arm + p + hand;
+}
+
+function tierDeco(tier, g) {
+  if (tier === "未觉醒") {
+    return `<text x="22" y="66" font-size="24" font-weight="900" fill="${INK}" font-family="Arial" opacity=".7">Z</text>
+            <text x="40" y="44" font-size="17" font-weight="900" fill="${INK}" font-family="Arial" opacity=".45">z</text>
+            <text x="54" y="28" font-size="12" font-weight="900" fill="${INK}" font-family="Arial" opacity=".3">z</text>`;
+  }
+  if (tier === "初阶") {
+    return `<path d="M30 74 Q30 60 30 50" stroke="#3FAE5A" stroke-width="4" stroke-linecap="round" fill="none"/>
+            <path d="M30 54 Q16 42 8 50 Q18 60 30 54 Z" fill="#7BD88F" ${st(3)}/>
+            <path d="M30 52 Q42 38 52 46 Q42 58 30 52 Z" fill="#7BD88F" ${st(3)}/>`;
+  }
+  if (tier === "中阶") {
+    return `<path d="M28 52 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 z" fill="${g.main}"/>
+            <path d="M24 130 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2 z" fill="${g.main}" opacity=".6"/>`;
+  }
+  return `<path d="M24 54 l4 11 11 4 -11 4 -4 11 -4 -11 -11 -4 11 -4 z" fill="#FFD23F" ${st(2)}/>
+          <path d="M22 128 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 z" fill="#FFD23F" ${st(2)}/>`;
+}
+
+let __uid = 0;
+function drawFigure(type, tier, opts = {}) {
+  const f = FIGURES[type];
+  const g = GROUP[groupOf(type)];
+  tier = tier || "中阶";
+  const uid = "c" + (++__uid);
+  let bg = "";
+  if (!opts.noBg) {
+    let rays = "";
+    if (tier === "高阶") {
+      for (let i = 0; i < 12; i++) {
+        const a1 = (i / 12) * Math.PI * 2, a2 = a1 + Math.PI / 24;
+        rays += `<path d="M100 110 L${(100 + Math.cos(a1) * 130).toFixed(1)} ${(110 + Math.sin(a1) * 130).toFixed(1)} L${(100 + Math.cos(a2) * 130).toFixed(1)} ${(110 + Math.sin(a2) * 130).toFixed(1)} Z" fill="${g.main}" opacity=".22"/>`;
+      }
+    }
+    bg = `<defs><clipPath id="${uid}"><circle cx="100" cy="110" r="90"/></clipPath></defs>
+          <circle cx="100" cy="110" r="90" fill="${tier === "未觉醒" ? "#E4E2EC" : g.soft}"/>
+          <g clip-path="url(#${uid})">${rays}</g>`;
+  }
+  const sil = opts.silhouette ? `filter="url(#${uid}s)"` : "";
+  const silDef = opts.silhouette ? `<defs><filter id="${uid}s" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.13  0 0 0 0 0.14  0 0 0 0 0.23  0 0 0 1 0"/></filter></defs>` : "";
+  return `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${opts.silhouette ? "神秘人物" : f.name}" overflow="visible">
+    ${silDef}${bg}
+    <g ${sil}>
+      ${hatBack(f)}
+      ${body(f)}
+      ${propBack(f)}
+      ${ears(f)}
+      <circle cx="100" cy="102" r="48" fill="${f.skin}" ${st()}/>
+      ${hairCap(f)}
+      ${hatFront(f)}
+      ${face(f, opts.silhouette ? "中阶" : tier)}
+      ${propFront(f)}
+    </g>
+    ${opts.silhouette ? "" : tierDeco(tier, g)}
+  </svg>`;
+}
+// if (typeof module !== "undefined") module.exports = { drawFigure, FIGURES, TIER_STYLE, GROUP, groupOf };
+
+</script>
+
+<script>
+let currentType = "";
+let currentQuestion = 0;
+let answers = [];
+let questions = [];
+let typeQuestionIndex = 0;
+let typeScores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+let locked = false;
+
+const typeQuestions = [
+  { q: "在聚会中，你更倾向于？", options: ["主动和很多人交流", "和少数熟人深聊"], dim: ["E", "I"] },
+  { q: "做决定时，你更依赖？", options: ["具体事实和经验", "直觉和可能性"], dim: ["S", "N"] },
+  { q: "评价一件事时，你更看重？", options: ["逻辑和公平", "感受和和谐"], dim: ["T", "F"] },
+  { q: "面对计划，你更喜欢？", options: ["提前安排好", "保持灵活随性"], dim: ["J", "P"] },
+  { q: "休息时你更愿意？", options: ["出去见朋友", "独处充电"], dim: ["E", "I"] },
+  { q: "学习新东西时，你更关注？", options: ["实际怎么用", "背后的原理"], dim: ["S", "N"] },
+  { q: "发生冲突时，你更倾向？", options: ["讲道理解决", "照顾情绪"], dim: ["T", "F"] },
+  { q: "旅行时你更喜欢？", options: ["详细行程", "即兴探索"], dim: ["J", "P"] }
+];
+
+const questionBank = {
+  INTJ: [
+    "面对缺乏逻辑的观点，我能保持耐心并尝试理解对方的思路",
+    "我会主动规划长期目标，并拆解成可执行的步骤",
+    "当计划被打断时，我能快速调整而不陷入烦躁",
+    "我能清晰地向他人解释复杂概念，而不是只在心里想明白",
+    "我愿意听取不同意见，即使它挑战我的核心判断",
+    "我能在独立思考和团队协作之间找到平衡",
+    "面对不确定性，我能保持冷静并寻找可行路径",
+    "我定期反思自己的决策模式，并主动改进",
+    "我能接受他人的不完美，而不急于纠正他们",
+    "我能把抽象想法落地成具体行动",
+    "面对批评时，我能区分情绪和有效信息",
+    "我有意识地培养自己的人际敏感度",
+    "我能在追求效率的同时，关注过程中的人际影响",
+    "当自己判断出错时，我能坦然承认并调整方向"
+  ],
+  INTP: [
+    "我能把有趣的理论思考转化为实际可验证的行动",
+    "面对需要快速决策的场合，我能接受“足够好”而非完美",
+    "我愿意向他人解释自己的想法，而不是觉得“他们理解不了”",
+    "我能接受自己的兴趣随时切换，同时完成重要事项",
+    "当别人指出我逻辑漏洞时，我能开心接受而非防御",
+    "我有意识地关注自己的情绪状态，而不是只分析外部问题",
+    "我能在社交中保持基本参与，而不完全抽离",
+    "我定期清理未完成的项目，而不是无限积累",
+    "面对现实约束，我能调整理想模型而不是抱怨",
+    "我能把复杂想法用简单语言传达给非专业人士",
+    "我对自己的拖延模式有觉察，并尝试小步干预",
+    "我能在独立研究和必要协作之间找到平衡"
+  ],
+  ENTJ: [
+    "我能在推动目标的同时，真正倾听团队成员的顾虑",
+    "当计划受阻时，我能灵活调整策略而不一味加压",
+    "我能接受“慢一点但更可持续”的做法",
+    "面对不同意见，我能区分“有价值”和“只是反对”",
+    "我有意识地关注自己的情绪对他人的影响",
+    "我能把宏观愿景拆解成他人可执行的具体任务",
+    "在压力下我仍能保持对细节的基本关注",
+    "我愿意承认自己的判断错误并公开调整",
+    "我能在追求结果和照顾人的感受之间找到平衡",
+    "我定期反思自己的领导方式是否过度控制",
+    "面对不确定性，我能给出方向而不是假装确定",
+    "我能接受他人用不同方式达成目标"
+  ],
+  ENTP: [
+    "我能把新点子收敛成可执行的计划并跟进",
+    "面对需要深入的项目，我能保持足够的专注",
+    "我能接受“先做完再优化”而不是一直寻找更好方案",
+    "在辩论中我能注意对方的情绪，而不只是赢逻辑",
+    "我有意识地完成已经承诺的事情",
+    "面对规则和限制，我能找到创造性但合规的路径",
+    "我能在多个兴趣中做出优先级排序",
+    "当计划被打乱时，我能快速重新聚焦核心目标",
+    "我愿意听取“这个想法不现实”的反馈并认真评估",
+    "我能把兴奋感转化为持续的小步行动",
+    "我有意识地关注自己对他人的承诺是否过度",
+    "我能在创新和执行之间找到平衡"
+  ],
+  INFJ: [
+    "我能区分自己的直觉感受和客观事实",
+    "面对他人的痛苦，我能提供支持而不过度消耗自己",
+    "我有清晰的个人边界，并能在关系中坚持它们",
+    "我能把理想转化为具体可落地的步骤",
+    "当现实与愿景冲突时，我能调整而不陷入失望",
+    "我愿意直接表达自己的需求，而不是期待被理解",
+    "我能接受不完美的结果，并继续前进",
+    "面对批评时，我能吸收有价值的部分而不自我否定",
+    "我有稳定的自我照顾习惯，而不只是照顾他人",
+    "我能在深度思考和实际行动之间切换",
+    "我定期检查自己是否过度理想化某个人或某件事",
+    "我能在孤独充电和必要社交之间找到平衡"
+  ],
+  INFP: [
+    "我能区分自己的感受和他人的期待，不被轻易左右",
+    "面对批评时，我能吸收有价值的部分而不陷入自我否定",
+    "我有清晰的个人价值观，并能在现实中坚持它们",
+    "我能把内心想法转化为具体行动，而不是只停留在想象",
+    "我能接受不完美，并继续前进",
+    "我能在保护自己边界的同时保持开放",
+    "我有稳定的自我认同，不完全依赖外界认可",
+    "我能把理想和现实结合起来，找到可行路径",
+    "我能在情绪波动时仍做出相对理性的选择",
+    "我愿意为自己的需求主动表达，而不是等待被理解",
+    "我能从失败中快速恢复，而不是长时间沉浸",
+    "我有明确的成长方向，并持续小步推进",
+    "我能在保持敏感的同时，建立基本的情绪调节能力",
+    "我愿意接受外部反馈，而不是只活在自己的内在世界"
+  ],
+  ENFJ: [
+    "我能在帮助他人的同时，关注自己的能量消耗",
+    "面对不同意见，我能真正倾听而不是急于引导",
+    "我能接受“不是所有人都需要被我带动”",
+    "当团队氛围不佳时，我能先处理事实而非只顾情绪",
+    "我有清晰的个人目标，而不只是为他人的目标服务",
+    "我能直接指出问题，而不是过度委婉",
+    "面对自己的负面情绪，我能承认并处理",
+    "我能在激励他人和允许他人自主之间找到平衡",
+    "我定期检查自己是否过度承担他人的情绪",
+    "我能接受计划被打乱而不陷入焦虑",
+    "我有意识地培养独立思考，而不只是协调共识",
+    "我能把关心转化为具体有效的支持"
+  ],
+  ENFP: [
+    "我能把热情转化为持续的行动，而不是只有灵感",
+    "面对新机会时，我能评估可行性而不只是兴奋",
+    "我能在多个兴趣之间做出选择并深入",
+    "我能接受计划被打乱，并灵活调整",
+    "我能在社交中既表达自己又倾听他人",
+    "我能把想法落地，而不是只停留在讨论",
+    "面对挫折时，我能快速恢复热情",
+    "我有意识地完成已经开始的事情",
+    "我能在追求新鲜感和完成责任之间找到平衡",
+    "我愿意接受“需要深入而非广度”的反馈",
+    "我能管理自己的情绪波动，而不被它完全主导",
+    "我有明确的优先级，而不是对所有机会都说yes"
+  ],
+  ISTJ: [
+    "我能在遵守规则的同时保持一定灵活性",
+    "面对变化时，我能逐步适应而不抗拒",
+    "我能有效表达自己的想法，而不是只埋头做事",
+    "我能接受他人的不同工作方式",
+    "我能在完成任务的同时关注团队感受",
+    "我有意识地尝试新方法，而不是只走老路",
+    "面对不确定性时，我能保持行动力",
+    "我能平衡细节把控和整体目标",
+    "我能接受计划外的临时调整",
+    "我愿意分享自己的经验，而不只是独自执行",
+    "我能在坚持标准的同时，允许合理的例外",
+    "我定期反思自己的习惯是否仍然有效"
+  ],
+  ISFJ: [
+    "我能在照顾他人的同时，明确表达自己的需求",
+    "面对变化时，我能逐步适应而不过度焦虑",
+    "我能直接拒绝不合理的请求，而不感到愧疚",
+    "我能接受他人用不同方式做事",
+    "我有意识地关注自己的情绪和能量",
+    "我能在保持细心的同时，避免过度担忧",
+    "面对冲突时，我能表达真实想法",
+    "我能接受“不完美的帮助也是帮助”",
+    "我有自己的兴趣和目标，而不只是服务他人",
+    "我能在传统方式和新方法之间找到平衡",
+    "我愿意接受反馈，而不只是默默承担",
+    "我能区分“应该做”和“我真正想做”"
+  ],
+  ESTJ: [
+    "我能在执行计划的同时，听取不同意见",
+    "面对变化时，我能调整策略而不固执",
+    "我能关注团队成员的感受，而不只是任务进度",
+    "我能接受“效率不是唯一标准”",
+    "我有意识地给予他人自主空间",
+    "面对自己的错误，我能坦然承认",
+    "我能在坚持规则和灵活处理之间找到平衡",
+    "我能把直接的反馈包装得更易被接受",
+    "我定期反思自己的管理方式是否过于强硬",
+    "我能接受他人用不同节奏完成工作",
+    "我能在追求结果的同时，关注过程中的协作",
+    "我有意识地培养耐心，尤其是面对不同风格的人"
+  ],
+  ESFJ: [
+    "我能在维护和谐的同时，表达真实的不同意见",
+    "面对他人的负面情绪，我能提供支持而不过度承担",
+    "我有清晰的个人边界",
+    "我能接受“不是所有人都喜欢热闹和关注”",
+    "我能在关注他人的同时，关注自己的需求",
+    "面对冲突时，我能直接处理而不是回避",
+    "我能接受计划外的变化",
+    "我有自己的兴趣和目标，而不只是为群体服务",
+    "我能区分“真正的关心”和“讨好”",
+    "我愿意接受批评，而不只是寻求认可",
+    "我能在社交活跃和必要独处之间找到平衡",
+    "我能把关心转化为具体有效的行动"
+  ],
+  ISTP: [
+    "我能在独立解决问题的同时，必要时寻求帮助",
+    "面对需要解释自己想法的场合，我能清晰表达",
+    "我能接受计划性的工作，而不只是即兴处理",
+    "我有意识地关注自己的长期目标",
+    "面对情绪性话题，我能保持基本参与",
+    "我能在动手实践和理论思考之间找到平衡",
+    "我能接受他人的不同节奏",
+    "我有意识地维护重要关系，而不只是专注任务",
+    "面对变化时，我能快速调整",
+    "我能把当下的解决方案与长期影响联系起来",
+    "我愿意分享自己的经验，而不只是独自解决",
+    "我能在冷静分析和必要情感回应之间切换"
+  ],
+  ISFP: [
+    "我能把当下的感受转化为具体行动",
+    "面对需要长期坚持的事情，我能保持基本节奏",
+    "我能直接表达自己的想法，而不只是通过行动暗示",
+    "我能接受外部的结构和计划",
+    "面对冲突时，我能表达真实感受",
+    "我有意识地关注自己的长期方向",
+    "我能在保持温和的同时，坚持自己的边界",
+    "我能接受不完美的结果并继续",
+    "我能把审美和感受与实际产出联系起来",
+    "我愿意接受他人的不同价值观",
+    "我能在享受当下和承担责任之间找到平衡",
+    "我有意识地表达自己的需求"
+  ],
+  ESTP: [
+    "我能在快速行动前，做基本的风险评估",
+    "面对需要长期投入的项目，我能保持持续关注",
+    "我能接受“慢一点但更稳”的做法",
+    "我有意识地关注自己的行为对他人的影响",
+    "面对规则和限制，我能找到合理的应对方式",
+    "我能在即时反馈和长期目标之间找到平衡",
+    "我能接受需要深入思考的任务",
+    "我有意识地完成已经开始的事情",
+    "面对情绪性场合，我能保持基本耐心",
+    "我能把行动力和策略思考结合起来",
+    "我愿意听取“需要更谨慎”的反馈",
+    "我能在追求刺激和承担责任之间找到平衡"
+  ],
+  ESFP: [
+    "我能把当下的热情转化为持续的行动",
+    "面对需要专注的任务，我能保持基本注意力",
+    "我能接受计划性的安排",
+    "我有意识地关注自己的长期目标",
+    "面对负面反馈，我能吸收有价值的部分",
+    "我能在享受当下和完成责任之间找到平衡",
+    "我能接受需要独立完成的工作",
+    "我有意识地管理自己的情绪表达",
+    "我能把社交能量和实际产出联系起来",
+    "我愿意接受“需要更深入”的反馈",
+    "我能在追求快乐和面对困难之间切换",
+    "我有明确的优先级，而不是只跟随当下感受"
+  ],
+  default: [
+    "我清楚自己的优势和短板，并主动扬长补短",
+    "面对压力时，我能保持冷静并做出理性判断",
+    "我能有效沟通自己的想法，并倾听他人",
+    "我有明确的目标，并持续为之努力",
+    "我能从失败中学习，而不是反复陷入同样模式",
+    "我能平衡个人需求与他人期待",
+    "我定期反思自己的行为和决策",
+    "我对自己的成长有清晰的方向感",
+    "我能在关键时刻做出选择，而不是拖延",
+    "我能接受反馈并转化为改进",
+    "我有稳定的情绪调节能力",
+    "我能把想法转化为实际结果",
+    "我能在变化中保持基本的行动力",
+    "我有意识地观察自己的反应模式"
+  ]
+};
+
+function setGroupColors(type) {
+  const g = GROUP[groupOf(type)];
+  document.documentElement.style.setProperty("--group", g.main);
+  document.documentElement.style.setProperty("--group-soft", g.soft);
+}
+
+function renderOptions(container, labels, onPick) {
+  container.innerHTML = "";
+  labels.forEach((label, idx) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "option";
+    b.innerHTML = `<span class="key">${String.fromCharCode(65 + idx)}</span><span>${label}</span>`;
+    b.onclick = () => { if (locked) return; locked = true; onPick(idx, b); };
+    container.appendChild(b);
+  });
+}
+function refade(id) { const el = document.getElementById(id); el.classList.remove("fade"); void el.offsetWidth; el.classList.add("fade"); }
+function show(id) {
+  ["startScreen", "typeScreen", "lockScreen", "questionScreen", "resultScreen"].forEach(s => document.getElementById(s).classList.toggle("hidden", s !== id));
+  window.scrollTo(0, 0);
+}
+
+function startTypePhase() {
+  show("typeScreen");
+  typeQuestionIndex = 0;
+  typeScores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+  showTypeQuestion();
+}
+
+function showTypeQuestion() {
+  locked = false;
+  const item = typeQuestions[typeQuestionIndex];
+  document.getElementById("typeQuestionText").textContent = item.q;
+  document.getElementById("typeProgressBar").style.width = ((typeQuestionIndex / typeQuestions.length) * 100) + "%";
+  document.getElementById("typeCounter").textContent = `第 ${typeQuestionIndex + 1} / ${typeQuestions.length} 题`;
+  renderOptions(document.getElementById("typeOptions"), item.options, (idx, el) => selectTypeOption(item.dim[idx], el));
+  refade("typeQuestionText"); refade("typeOptions");
+}
+
+function selectTypeOption(dim, el) {
+  el.classList.add("selected");
+  typeScores[dim]++;
+  setTimeout(() => {
+    typeQuestionIndex++;
+    if (typeQuestionIndex >= typeQuestions.length) determineType();
+    else showTypeQuestion();
+  }, 260);
+}
+
+function determineType() {
+  const EorI = typeScores.E >= typeScores.I ? "E" : "I";
+  const SorN = typeScores.S >= typeScores.N ? "S" : "N";
+  const TorF = typeScores.T >= typeScores.F ? "T" : "F";
+  const JorP = typeScores.J >= typeScores.P ? "J" : "P";
+  currentType = EorI + SorN + TorF + JorP;
+  setGroupColors(currentType);
+  const g = GROUP[groupOf(currentType)];
+  document.getElementById("lockFig").innerHTML =
+    `<svg viewBox="0 0 200 200" style="position:absolute;inset:0;width:100%;height:100%"><circle cx="100" cy="110" r="90" fill="${g.soft}" stroke="${INK}" stroke-width="3"/></svg>` +
+    `<div style="position:relative">${drawFigure(currentType, "中阶", { noBg: true, silhouette: true })}</div><span class="qm">?</span>`;
+  document.getElementById("lockGroup").textContent = "所属阵营：" + g.name;
+  document.getElementById("qBadge").innerHTML = drawFigure(currentType, "中阶", { noBg: true, silhouette: true });
+  show("lockScreen");
+}
+
+function startTest() {
+  let bank = questionBank[currentType] || questionBank.default;
+  questions = [...bank];
+  while (questions.length < 12) questions = questions.concat(bank.slice(0, 12 - questions.length));
+  questions = questions.slice(0, 12);
+  currentQuestion = 0;
+  answers = [];
+  show("questionScreen");
+  showQuestion();
+}
+
+function showQuestion() {
+  locked = false;
+  document.getElementById("questionText").textContent = questions[currentQuestion];
+  document.getElementById("progressBar").style.width = ((currentQuestion / questions.length) * 100) + "%";
+  document.getElementById("questionCounter").textContent = `第 ${currentQuestion + 1} / ${questions.length} 题`;
+  const opts = ["完全不符合", "不太符合", "一般", "比较符合", "完全符合"];
+  renderOptions(document.getElementById("options"), opts, (idx, el) => selectOption(idx + 1, el));
+  refade("questionText"); refade("options");
+}
+
+function selectOption(score, el) {
+  el.classList.add("selected");
+  answers[currentQuestion] = score;
+  setTimeout(() => {
+    currentQuestion++;
+    if (currentQuestion >= questions.length) showResult();
+    else showQuestion();
+  }, 260);
+}
+
+function showResult() {
+  show("resultScreen");
+
+  const wm = document.getElementById("watermark");
+  wm.innerHTML = "";
+  for (let r = 0; r < 7; r++) for (let c = 0; c < 3; c++) {
+    const span = document.createElement("span");
+    span.textContent = "熊吉大王";
+    span.style.top = (6 + r * 14) + "%";
+    span.style.left = (-4 + c * 36 + (r % 2) * 14) + "%";
+    wm.appendChild(span);
+  }
+
+  const total = answers.reduce((a, b) => a + b, 0);
+  const max = questions.length * 5;
+  const percent = Math.round((total / max) * 100);
+
+  let tier = "未觉醒";
+  if (percent >= 85) tier = "高阶";
+  else if (percent >= 70) tier = "中阶";
+  else if (percent >= 50) tier = "初阶";
+
+  const fig = FIGURES[currentType];
+  const g = GROUP[groupOf(currentType)];
+
+  const scored = questions.map((q, i) => ({ q, score: answers[i] || 0 }));
+  const strengths = scored.filter(s => s.score >= 4).slice(0, 2);
+  const growth = scored.filter(s => s.score <= 2).slice(0, 3);
+
+  let analysisHtml = `<p>${getTierAnalysis(currentType, tier)}</p>`;
+  if (strengths.length) {
+    analysisHtml += `<h3>你已具备的优势</h3><ul>`;
+    strengths.forEach(s => { analysisHtml += `<li>${s.q.replace(/我能|我会|我有|我愿意|我清楚|我定期|我对自己/g, "").trim()}</li>`; });
+    analysisHtml += `</ul>`;
+  }
+  if (growth.length) {
+    analysisHtml += `<h3>值得练一练的地方</h3><ul>`;
+    growth.forEach(s => { analysisHtml += `<li>${s.q}</li>`; });
+    analysisHtml += `</ul>`;
+  } else {
+    analysisHtml += `<h3>整体状态</h3><p>你在多数维度上都很稳，可以继续深化已有优势，同时留意那些被忽略的小盲区。</p>`;
+  }
+  analysisHtml += `<h3>下一步建议</h3><p>${getNextStep(currentType)}</p>`;
+
+  document.getElementById("groupName").textContent = g.name;
+  document.getElementById("resultFig").innerHTML = drawFigure(currentType, tier);
+  document.getElementById("resultType").textContent = currentType;
+  document.getElementById("resultName").textContent = fig.name;
+  document.getElementById("resultTitle").textContent = fig.title;
+  document.getElementById("resultQuote").textContent = "“" + fig.quote + "”";
+  document.getElementById("resultTags").innerHTML = fig.tags.map(t => `<span class="tag">#${t}</span>`).join("");
+  document.getElementById("resultScore").innerHTML = percent + "<small>分</small>";
+  document.getElementById("resultTier").textContent = tier;
+  document.getElementById("tierNick").textContent = TIER_STYLE[tier].nick;
+  document.getElementById("resultAnalysis").innerHTML = analysisHtml;
+  requestAnimationFrame(() => requestAnimationFrame(() => { document.getElementById("scoreMeter").style.width = percent + "%"; }));
+
+  const archive = "XZ" + Date.now().toString().slice(-8);
+  const date = new Date().toLocaleDateString("zh-CN");
+  document.getElementById("resultArchive").textContent = `档案 ${archive} · ${date}`;
+
+  const order = ["INTJ","INTP","ENTJ","ENTP","INFJ","INFP","ENFJ","ENFP","ISTJ","ISFJ","ESTJ","ESFJ","ISTP","ISFP","ESTP","ESFP"];
+  document.getElementById("gallery").innerHTML = order.map(t =>
+    `<div class="cell${t === currentType ? " me" : ""}">${drawFigure(t, "中阶")}<div class="n">${FIGURES[t].name}</div><div class="t">${t}</div></div>`
+  ).join("");
+}
+
+function getTierAnalysis(type, tier) {
+  const who = `${FIGURES[type].name}型的${type}`;
+  const base = {
+    "高阶": `作为${who}，你已经形成了相对稳定且有效的自我运作模式。面对压力和不确定性时，你能保持清醒并做出有质量的选择。继续深化优势的同时，留意那些被高效率或高敏感所掩盖的细微盲区。`,
+    "中阶": `作为${who}，你对自己的模式已经有一定觉察，也在主动调整。有时仍会被旧习惯拉回，但整体方向是向上的。关键是把觉察变成持续的小行动，而不是停留在“我知道了”。`,
+    "初阶": `作为${who}，你开始意识到自己的反应模式，但改变还比较吃力。这很正常，每个名将都有初出茅庐的时候。建议从最具体、最容易实践的场景开始练习，而不是试图一次改变所有。`,
+    "未觉醒": `作为${who}，你目前更多处于自动反应状态，对自身模式的觉察还比较少。好消息是，做完这个测试本身就是一个开始。下一步是有意识地观察自己在关键场景里的真实反应。`
+  };
+  return base[tier] || base["中阶"];
+}
+
+function getNextStep(type) {
+  const tips = {
+    INTJ: "尝试在一次决策中，主动询问一个你平时不太重视的人的意见，并真正消化它。",
+    INTP: "选一个你一直“想研究”的小问题，本周内完成一个最小可行的输出（笔记、分享或实践）。",
+    ENTJ: "在下一次推动任务时，先问一句“大家有什么顾虑”，并真正停下来听完。",
+    ENTP: "把一个你最兴奋的点子，收敛成3个可执行步骤，并完成其中第一步。",
+    INFJ: "练习在一次对话中，直接说出自己的一个真实需求，而不是等待对方理解。",
+    INFP: "选一个你一直在内心反复的想法，本周用一个很小的具体行动把它落地。",
+    ENFJ: "今天有意识地拒绝一个不太合理的请求，并观察自己的感受。",
+    ENFP: "从你正在进行的多个事情中，选一个最重要的，给它设定一个明确的完成标准。",
+    ISTJ: "在一次工作中，主动尝试一个你平时不会用的方法，并记录结果。",
+    ISFJ: "练习直接表达一个你真正想要的东西，而不是只考虑别人的需要。",
+    ESTJ: "在下一次给反馈时，先问对方“你怎么看”，再给出你的判断。",
+    ESFJ: "练习在一次场合中，表达一个与群体不完全一致的真实想法。",
+    ISTP: "选一个你正在处理的问题，尝试向一个人清晰地解释你的思路。",
+    ISFP: "把一个当下的感受或想法，用一个具体的小行动表达出来。",
+    ESTP: "在下一次快速行动前，花2分钟写下可能的风险和应对方式。",
+    ESFP: "选一个需要持续投入的小目标，给它设定一个简单的每日节奏。"
+  };
+  return tips[type] || "选择一个你觉得最有阻力的具体场景，本周有意识地尝试一种不同的应对方式。";
+}
+
+/* 首页人物 */
+(function () {
+  const cast = ["ISFP", "INTJ", "ISTJ", "ENTJ", "ESTP"];
+  document.getElementById("cast").innerHTML = cast.map(t => `<div class="fig">${drawFigure(t, "中阶")}</div>`).join("");
+})();
+</script>
+</body>
+</html>
