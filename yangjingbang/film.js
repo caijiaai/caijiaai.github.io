@@ -128,7 +128,8 @@ function photo(key, cx, cy, w, h, kb, o = {}) {
   ctx.restore();
   if (o.caption) text(o.caption, cx, cy + h / 2 + 46, 24, { col: '#5a4532', a: o.a ?? 1 });
 }
-const CAP = { creek: '洋泾浜 · 1907', quay: '洋泾浜河岸 · 1901', dock: '洋泾浜边的洋行 · 1908', avenue: '爱多亚路 · 1935', avenue2: '爱多亚路 · 民国' };
+// 照片说明只写地点：照片年代不在锁定史实里，不上屏
+const CAP = { creek: '洋泾浜', quay: '洋泾浜河岸', dock: '洋泾浜边的洋行', avenue: '爱多亚路', avenue2: '爱多亚路' };
 const credit = k => CAP[k] ?? '';
 
 // ================= 镜 1：今天的延安东路退回成河（0–8） =================

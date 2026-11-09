@@ -7,5 +7,35 @@
   "date": "1907",
   "artist": "Scan by NYPL",
   "credit": "1907"
+ },
+ "dock": {
+  "file": "dock.jpg",
+  "title": "File:Tcitp d482 hopkins dunn & co at yang-king-pang.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Tcitp_d482_hopkins_dunn_%26_co_at_yang-king-pang.jpg",
+  "license": "Public domain",
+  "date": "Taken in 1908",
+  "artist": "Arnold Wright",
+  "credit": "",
+  "note": "用户提供文件，尺寸与 Commons 原图一致"
+ },
+ "quay": {
+  "file": "quay.jpg",
+  "title": "File:Shanghai - Quai du Yang-king-pang - Max Nössler - 272.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Shanghai_-_Quai_du_Yang-king-pang_-_Max_N%C3%B6ssler_-_272.jpg",
+  "license": "Public domain",
+  "date": "Taken in 1901",
+  "artist": "Unknown authorUnknown author",
+  "credit": "",
+  "note": "用户提供文件，尺寸与 Commons 原图一致"
+ },
+ "avenue": {
+  "file": "avenue.png",
+  "title": "File:Shanghai trolleybus number B320 - 1935.png",
+  "page": "https://commons.wikimedia.org/wiki/File:Shanghai_trolleybus_number_B320_-_1935.png",
+  "license": "Public domain",
+  "date": "1935",
+  "artist": "Unknown authorUnknown author",
+  "credit": "",
+  "note": "用户提供文件，尺寸与 Commons 原图一致"
  }
 }
