@@ -51,7 +51,7 @@ function hand(s, x, y, size, p, o = {}) {
   ctx.globalAlpha = o.a ?? 1; ctx.fillStyle = o.col ?? INK; ctx.fillText(s, x0, y); ctx.restore(); return w;
 }
 // 角标：年份或地名，手写在左上角
-const CORNER = [[0.3, 7.6, '今日 · 延安东路'], [8.3, 44.6, '洋泾浜 · 一八四五 / 一八四九'], [45.2, 64.6, '东新桥 · 八仙桥'], [65.3, 104.6, '外滩 · 码头洋行'], [105.3, 134.6, '1914'], [135.3, 164.6, '爱多亚路 · 1916'], [165.3, 189.6, '1943 · 1945 · 1950'], [190.3, 216, '延安东路 · 今日']];
+const CORNER = [[0.3, 7.6, '今日 · 延安东路'], [8.3, 44.6, '洋泾浜 · 一八四五 / 一八四九'], [45.2, 64.6, '东新桥 · 八仙桥'], [65.3, 104.6, '洋泾浜两岸 · 码头洋行'], [105.3, 134.6, '1914'], [135.3, 164.6, '爱多亚路 · 1916'], [165.3, 189.6, '1943 · 1945 · 1950'], [190.3, 216, '延安东路 · 今日']];
 function corner(t) {
   for (const [a, b, s] of CORNER) if (t > a && t < b) {
     const p = seg(t, a, a + .8), q = 1 - seg(t, b - .4, b);
@@ -224,8 +224,9 @@ function shot3(t) {
 function shot4(t) {
   ctx.drawImage(paper, 0, 0);
   const u = seg(t, 65, 105);
-  if (IMG.dock) { const sw = ss(seg(t, 84.5, 85.5)); photo('dock', 540, 640, 900, 820, { z: lerp(1.04, 1.2, u), x: 0, y: lerp(.5, -.5, u) }, { rot: -.012, caption: credit('dock'), a: 1 - sw }); if (IMG.quay && sw > 0) photo('quay', 540, 640, 900, 820, { z: lerp(1.0, 1.15, seg(t, 84.5, 105)), x: lerp(-.6, .6, seg(t, 84.5, 105)), y: 0 }, { rot: .01, caption: credit('quay'), a: sw }); }
-  else drawnDock(t);
+  if (!IMG.dock && IMG.creek) photo('creek', 540, 640, 900, 820, { z: lerp(1.25, 1.45, u), x: lerp(.7, -.4, u), y: lerp(-.2, .3, u) }, { rot: -.012, caption: credit('creek') });
+  else if (IMG.dock) { const sw = ss(seg(t, 84.5, 85.5)); photo('dock', 540, 640, 900, 820, { z: lerp(1.04, 1.2, u), x: 0, y: lerp(.5, -.5, u) }, { rot: -.012, caption: credit('dock'), a: 1 - sw }); if (IMG.quay && sw > 0) photo('quay', 540, 640, 900, 820, { z: lerp(1.0, 1.15, seg(t, 84.5, 105)), x: lerp(-.6, .6, seg(t, 84.5, 105)), y: 0 }, { rot: .01, caption: credit('quay'), a: sw }); }
+  else if (!IMG.creek) drawnDock(t);
   // 上海话夹英语：两个对话气泡
   const b = (s, x, y, p, flip) => { if (p <= 0) return; const sc = back(p); ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc); ctx.fillStyle = '#f7f0de'; ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.beginPath(); ctx.roundRect(-150, -60, 300, 110, 30); ctx.fill(); ctx.stroke(); ctx.beginPath(); ctx.moveTo(flip ? 60 : -60, 48); ctx.lineTo(flip ? 90 : -90, 100); ctx.lineTo(flip ? 20 : -20, 50); ctx.fill(); ctx.stroke(); text(s, 0, 14, 46, { weight: 600 }); ctx.restore(); };
   const qa = 1 - ss(seg(t, V('4-3') - .3, V('4-3') + .3));
