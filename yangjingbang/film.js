@@ -128,7 +128,8 @@ function photo(key, cx, cy, w, h, kb, o = {}) {
   ctx.restore();
   if (o.caption) text(o.caption, cx, cy + h / 2 + 46, 24, { col: '#5a4532', a: o.a ?? 1 });
 }
-const credit = k => PHOTOS[k] ? `图：Wikimedia Commons · ${PHOTOS[k].credit}` : '';
+const CAP = { creek: '洋泾浜 · 1907', quay: '洋泾浜河岸 · 1901', dock: '洋泾浜边的洋行 · 1908', avenue: '爱多亚路 · 1935', avenue2: '爱多亚路 · 民国' };
+const credit = k => CAP[k] ?? '';
 
 // ================= 镜 1：今天的延安东路退回成河（0–8） =================
 function shot1(t) {
@@ -198,6 +199,7 @@ function map2(t) {
   // 九座桥：一座一座出来，带编号
   if (t > V('2-8')) bridgesX.forEach((x, i) => { const p = back(seg(t, V('2-8') + i * .28, V('2-8') + i * .28 + .4)); if (p <= 0) return; bridgeIcon(x, creekY(x) + 10, .9 * p, 1); text(String(i + 1), x, creekY(x) - 38, 30, { col: '#8a2414', a: clamp(p), weight: 600 }); });
   ctx.restore();
+  if (IMG.creek && t < V('2-2') + .8) { const a = ss(seg(t, 8.4, 9.0)) * (1 - ss(seg(t, V('2-2') - .2, V('2-2') + .6))), u = seg(t, 8.4, V('2-2') + .6); photo('creek', 540, 600 - 40 * (1 - a), 940, 610, { z: lerp(1.04, 1.2, u), x: lerp(-.3, .3, u), y: 0 }, { rot: -.015, a, caption: credit('creek') }); }
   schematicTag(0);
 }
 
@@ -222,7 +224,7 @@ function shot3(t) {
 function shot4(t) {
   ctx.drawImage(paper, 0, 0);
   const u = seg(t, 65, 105);
-  if (IMG.dock) photo('dock', 540, 760, 940, 700, { z: lerp(1.05, 1.28, u), x: lerp(-.6, .6, u), y: lerp(.2, -.2, u) }, { rot: -.012, caption: credit('dock') });
+  if (IMG.dock) { const sw = ss(seg(t, 84.5, 85.5)); photo('dock', 540, 640, 900, 820, { z: lerp(1.04, 1.2, u), x: 0, y: lerp(.5, -.5, u) }, { rot: -.012, caption: credit('dock'), a: 1 - sw }); if (IMG.quay && sw > 0) photo('quay', 540, 640, 900, 820, { z: lerp(1.0, 1.15, seg(t, 84.5, 105)), x: lerp(-.6, .6, seg(t, 84.5, 105)), y: 0 }, { rot: .01, caption: credit('quay'), a: sw }); }
   else drawnDock(t);
   // 上海话夹英语：两个对话气泡
   const b = (s, x, y, p, flip) => { if (p <= 0) return; const sc = back(p); ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc); ctx.fillStyle = '#f7f0de'; ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.beginPath(); ctx.roundRect(-150, -60, 300, 110, 30); ctx.fill(); ctx.stroke(); ctx.beginPath(); ctx.moveTo(flip ? 60 : -60, 48); ctx.lineTo(flip ? 90 : -90, 100); ctx.lineTo(flip ? 20 : -20, 50); ctx.fill(); ctx.stroke(); text(s, 0, 14, 46, { weight: 600 }); ctx.restore(); };
@@ -305,7 +307,7 @@ function shot5(t) {
 function shot6(t) {
   ctx.drawImage(paper, 0, 0);
   const u = seg(t, 135, 165);
-  if (IMG.avenue) photo('avenue', 540, 700, 940, 640, { z: lerp(1.04, 1.22, u), x: lerp(.4, -.4, u), y: 0 }, { rot: .01, caption: credit('avenue') });
+  if (IMG.avenue) photo('avenue', 540, 560, 940, 700, { z: lerp(1.02, 1.18, u), x: lerp(.4, -.4, u), y: 0 }, { rot: .01, caption: credit('avenue'), a: 1 - .35 * ss(seg(t, V('6-5'), V('6-5') + .6)) });
   else { ctx.save(); ctx.globalAlpha = .9; mapBase(t, { a: .5 }); ctx.restore(); }
   // 英国名？法国名？两张小牌拔河
   const tug = t > V('6-2') && t < V('6-4') + .2;
