@@ -1,0 +1,6 @@
+out/
+stills/
+audio/*.wav
+events.json
+fonts/LongCang-Regular.ttf
+fonts/MaShanZheng-Regular.ttf

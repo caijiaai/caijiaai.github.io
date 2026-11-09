@@ -1,0 +1,19 @@
+#!/bin/sh
+# 一条命令从源代码重建《城墙变成了路》：字体子集 → 事件 → 配乐 → 音效 → 混音 → 逐帧渲染 → 合成
+set -e
+HERE=$(cd "$(dirname "$0")" && pwd)
+LIB=${LIB:-$HOME/lemo-opuscar}
+export LIB
+[ -f "$LIB/core/render/video.mjs" ] || { echo "set LIB to the Lemo-Opuscar library folder"; exit 1; }
+sh "$HERE/tools/fonts.sh"
+cd "$LIB"
+node core/render/events.mjs "$HERE"
+.venv/bin/python "$HERE/audio/score.py"
+.venv/bin/python "$HERE/audio/foley.py"
+.venv/bin/python "$HERE/audio/mix.py"
+node core/render/video.mjs "$HERE" --fps 24 --workers 4 --out "$HERE/out/video.mp4"
+sh core/render/mux.sh "$HERE/out/video.mp4" "$HERE/audio/mix.wav" "$HERE/out/master.mp4" 24 0
+ffmpeg -loglevel error -y -i "$HERE/out/video.mp4" -i "$HERE/out/master.mp4" -map 0:v -map 1:a -c:v libx264 -preset slow -crf 22 -pix_fmt yuv420p -c:a copy -movflags +faststart "$HERE/wall-to-road.mp4"
+ffmpeg -loglevel error -y -i "$HERE/wall-to-road.mp4" -map 0:v -c copy "$HERE/wall-to-road_picture-only.mp4"
+for s in stem_music stem_fx_ambience; do ffmpeg -loglevel error -y -i "$HERE/audio/$s.wav" -c:a flac -sample_fmt s32 "$HERE/$s.flac"; done
+.venv/bin/python core/render/srt.py "$HERE/subs.json" "$HERE/wall-to-road.srt"
