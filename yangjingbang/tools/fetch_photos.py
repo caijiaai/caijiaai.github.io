@@ -14,7 +14,8 @@ out = {}
 for k, title in PICK.items():
     h = hits[title]; url = (h['thumb'] if (h['w'] or 0) > 1600 else h['url']).replace('thumb.wikimedia.org', 'upload.wikimedia.org').split('?')[0]
     ext = os.path.splitext(url.split('?')[0])[1].lower() or '.jpg'; fn = k + ext
-    for i in range(8):
+    if not os.path.exists(os.path.join(H, 'photos', fn)):
+     for i in range(8):
         try:
             with urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': UA}), timeout=60) as r: open(os.path.join(H, 'photos', fn), 'wb').write(r.read()); break
         except urllib.error.HTTPError as e:
