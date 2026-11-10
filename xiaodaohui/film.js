@@ -181,32 +181,32 @@ function shot2(t) {
   hand('租界（城北）', 100, 350, 50, seg(t, V('2-2'), V('2-2') + .8), { font: 'MaShan', col: RED });
   hand('洋人住这里', 100, 420, 40, seg(t, V('2-2') + .3, V('2-2') + 1.1));
   // 县城图（供图）
-  photo('county_map', 540, 900, 920, 712, { z: lerp(1.0, 1.06, u), x: 0, y: 0 }, { fit: 'contain', rot: -.008, caption: credit('county_map') });
-  tagAt(890, 455, zj);
-  { const p = seg(t, V('2-2') + 1.2, V('2-2') + 2); if (p > 0) { ctx.save(); ctx.globalAlpha = clamp(p * 2); ctx.fillStyle = 'rgba(242,234,214,.92)'; ctx.fillRect(330, 845, 420, 78); ctx.restore(); hand('中国人住县城', 540, 900, 52, p, { align: 'center', col: RED, font: 'MaShan' }); } }
+  photo('county_map', 540, 880, 860, 665, { z: lerp(1.0, 1.06, u), x: 0, y: 0 }, { fit: 'contain', rot: -.008, caption: credit('county_map') });
+  tagAt(890, 300, zj);
+  { const p = seg(t, V('2-2') + 1.2, V('2-2') + 2); if (p > 0) { ctx.save(); ctx.globalAlpha = clamp(p * 2); ctx.fillStyle = 'rgba(242,234,214,.92)'; ctx.fillRect(330, 825, 420, 78); ctx.restore(); hand('中国人住县城', 540, 880, 52, p, { align: 'center', col: RED, font: 'MaShan' }); } }
   // 华洋分居：标题章
-  stampBox('华洋分居', 300, 640, seg(t, V('2-1') + 3.8, V('2-1') + 4.2), { size: 72, rot: -.1 });
-  hand('1845', 760, 640, 76, seg(t, V('2-1'), V('2-1') + .8), { font: 'MaShan', col: RED });
+  stampBox('华洋分居', 300, 650, seg(t, V('2-1') + 3.8, V('2-1') + 4.2), { size: 72, rot: -.1 });
+  hand('1845', 790, 650, 76, seg(t, V('2-1'), V('2-1') + .8), { font: 'MaShan', col: RED });
   // 章程字卡
   if (t > V('2-3')) {
     const p = seg(t, V('2-3'), V('2-3') + .5);
-    if (card(540, 1150, 900, 300, p, { rot: .01 })) {
-      text('《上海土地章程》', 0, -82, 46, { col: RED, weight: 600 });
-      text('· 华人之间，不得租让土地', 0, -4, 44, { a: seg(t, V('2-3') + .9, V('2-3') + 1.4) });
-      text('· 不得建房租给华人', 0, 68, 44, { a: seg(t, V('2-3') + 2.4, V('2-3') + 2.9) });
+    if (card(540, 1425, 900, 250, p, { rot: .01 })) {
+      text('《上海土地章程》', 0, -62, 44, { col: RED, weight: 600 });
+      text('· 华人之间，不得租让土地', 0, 6, 42, { a: seg(t, V('2-3') + .9, V('2-3') + 1.4) });
+      text('· 不得建房租给华人', 0, 72, 42, { a: seg(t, V('2-3') + 2.4, V('2-3') + 2.9) });
       ctx.restore();
     }
   }
   // 约 500 名本地农民 / 买办住在外头
   if (t > V('2-4')) {
     const a = ss(seg(t, V('2-4'), V('2-4') + .5)) * (1 - ss(seg(t, V('2-3') + 99, 999)));
-    for (let i = 0; i < 12; i++) person(500 + (i % 6) * 60, 470 + Math.floor(i / 6) * 40, .7, { a: a * clamp((t - V('2-4') - i * .08) * 4), col: '#5a4532' });
-    text('约 500 名本地农民', 690, 380, 40, { a, weight: 600, col: INK });
+    for (let i = 0; i < 12; i++) person(560 + (i % 6) * 54, 462 + Math.floor(i / 6) * 40, .7, { a: a * clamp((t - V('2-4') - i * .08) * 4), col: '#5a4532' });
+    text('约 500 名本地农民', 700, 380, 40, { a, weight: 600, col: INK });
   }
   if (t > V('2-5')) {
-    const p = seg(t, V('2-5') + 1.2, V('2-5') + 2.6), x = lerp(500, 1050, eio(p)), a = ss(seg(t, V('2-5'), V('2-5') + .4));
-    person(x, 548, 1.1, { a, col: '#2f4a6b' }); text('买办', x, 600, 34, { a: a * (1 - p * .6), col: '#2f4a6b', weight: 600 });
-    hand('买办：只能住在租界外头', 120, 590, 38, seg(t, V('2-5') + 2.4, V('2-5') + 3.2), { col: '#2f4a6b' });
+    const p = seg(t, V('2-5') + 1.2, V('2-5') + 2.6), x = lerp(930, 1046, eio(p)), a = ss(seg(t, V('2-5'), V('2-5') + .4));
+    person(x, 505, 1.0, { a, col: '#2f4a6b' });
+    text('买办：只能住在租界外头', 100, 492, 32, { align: 'left', weight: 600, col: '#2f4a6b', a: seg(t, V('2-5') + 2.4, V('2-5') + 3.0) });
   }
 }
 
@@ -253,7 +253,7 @@ function shot4(t) {
   ctx.save(); ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.arc(CX, CY, R, 0, 6.3); ctx.stroke(); ctx.fillStyle = 'rgba(150,140,120,.2)'; ctx.fill(); ctx.restore();
   text('县 城', CX, CY + 20, 60, { font: 'MaShan' });
   // 17 个月
-  hand('十七个月', 120, 700, 70, seg(t, V('4-1'), V('4-1') + .8), { font: 'MaShan', col: RED });
+  hand('十七个月', 90, 690, 62, seg(t, V('4-1'), V('4-1') + .8), { font: 'MaShan', col: RED });
   // 城里小刀会、城外清兵（营帐一圈）
   if (t > V('4-2')) { const p = seg(t, V('4-2'), V('4-2') + 1.6); text('城里：小刀会', CX, CY - 80, 40, { col: RED, weight: 600, a: clamp(p * 3) });
     for (let i = 0; i < 18; i++) { const a = i / 18 * 6.283 + .17; if (i / 18 > p) continue; const x = CX + Math.cos(a) * (R + 70), y = CY + Math.sin(a) * (R + 70); ctx.save(); ctx.fillStyle = '#4b4a6a'; ctx.beginPath(); ctx.moveTo(x - 18, y + 12); ctx.lineTo(x, y - 18); ctx.lineTo(x + 18, y + 12); ctx.closePath(); ctx.fill(); ctx.restore(); }
@@ -285,15 +285,14 @@ function shot5(t) {
   if (t > V('5-2')) {
     const hideCard = t > V('5-3') - .2 && t < V('5-4') - .2, a0 = seg(t, V('5-2'), V('5-2') + .4) * (hideCard ? 0 : 1);
     const p = seg(t, V('5-2') + 1.6, V('5-2') + 4.2), n = Math.round(lerp(5, 200, eio(p)));
-    ctx.save(); ctx.globalAlpha = a0; ctx.fillStyle = INK; for (let i = 0; i < n; i++) { const x = 140 + (i % 25) * 33, y = 1190 + Math.floor(i / 25) * 22; ctx.beginPath(); ctx.arc(x, y, 7, 0, 6.3); ctx.fill(); } ctx.restore();
-    text('租界里的中国人', 540, 1120, 44, { weight: 600, a: a0 });
-    text('约 500', 300, 1430, 64, { font: 'NotoSerif', weight: 700, col: INK, a: a0 });
-    text('→', 540, 1425, 64, { a: a0 * seg(t, V('5-2') + 1.6, V('5-2') + 2) });
-    text('两万多', 780, 1435, 84, { font: 'MaShan', col: RED, a: a0 * seg(t, V('5-2') + 3.6, V('5-2') + 4.2) });
+    ctx.save(); ctx.globalAlpha = a0; ctx.fillStyle = INK; for (let i = 0; i < n; i++) { const x = 140 + (i % 25) * 33, y = 1215 + Math.floor(i / 25) * 20; ctx.beginPath(); ctx.arc(x, y, 7, 0, 6.3); ctx.fill(); } ctx.restore();
+    text('租界里的中国人', 540, 1170, 44, { weight: 600, a: a0 });
+    text('约 500', 300, 1445, 64, { font: 'NotoSerif', weight: 700, col: INK, a: a0 });
+    text('→', 540, 1440, 64, { a: a0 * seg(t, V('5-2') + 1.6, V('5-2') + 2) });
+    text('两万多', 780, 1450, 84, { font: 'MaShan', col: RED, a: a0 * seg(t, V('5-2') + 3.6, V('5-2') + 4.2) });
   }
   // 十七个月后，突围
-  if (t > V('5-3')) { const a = 1 - ss(seg(t, V('5-4') - .3, V('5-4'))); if (a > 0 && card(540, 1150, 820, 300, seg(t, V('5-3'), V('5-3') + .4), { a, rot: -.01 })) { text('十七个月后', 0, -60, 52, { font: 'MaShan', col: RED }); text('小刀会突围', 0, 20, 58, { font: 'MaShan' }); text('刘丽川 死在城外', 0, 96, 46, { weight: 600, a: seg(t, V('5-3') + 3.4, V('5-3') + 4) }); ctx.restore(); } }
-  if (t > V('5-4')) { hand('逃进租界的人，不走了', 540, 1520, 56, seg(t, V('5-4'), V('5-4') + 1.4), { align: 'center', font: 'MaShan' }); }
+  if (t > V('5-3')) { const a = 1 - ss(seg(t, V('5-4') - .3, V('5-4'))); if (a > 0 && card(540, 1290, 820, 300, seg(t, V('5-3'), V('5-3') + .4), { a, rot: -.01 })) { text('十七个月后', 0, -60, 52, { font: 'MaShan', col: RED }); text('小刀会突围', 0, 20, 58, { font: 'MaShan' }); text('刘丽川 死在城外', 0, 96, 46, { weight: 600, a: seg(t, V('5-3') + 3.4, V('5-3') + 4) }); ctx.restore(); } }
 }
 
 // ================= 镜 6：章程改了（104–138） =================
@@ -302,10 +301,10 @@ function shot6(t) {
   const doc = t > V('6-7');
   if (!doc) {
     // 领事 vs 洋行老板
-    if (card(290, 640, 440, 520, seg(t, V('6-1'), V('6-1') + .4), { border: '#2f4a6b', rot: -.02 })) { text('领事', 0, -170, 66, { font: 'MaShan', col: '#2f4a6b' }); if (t > V('6-2')) { text('章程写得清清楚楚', 0, -40, 34, { a: seg(t, V('6-2'), V('6-2') + .4), weight: 600 }); text('华人不许住！', 0, 50, 54, { a: seg(t, V('6-2') + 1.6, V('6-2') + 2), font: 'MaShan', col: STAMP }); } ctx.restore(); }
-    if (card(790, 640, 440, 520, seg(t, V('6-3'), V('6-3') + .4), { rot: .02 })) { text('洋行老板', 0, -170, 60, { font: 'MaShan', col: RED }); const its = [['有钱的', '带资金', 0], ['没钱的', '出力气', 1.6], ['房子', '租得出价钱', 3.4]]; its.forEach(([a, b, d], i) => { const p = seg(t, V('6-4') + d, V('6-4') + d + .4); text(`${a} → ${b}`, 0, -60 + i * 90, 38, { a: p, weight: 600 }); }); text('欢迎！', 0, 210, 54, { a: seg(t, V('6-5'), V('6-5') + .4), font: 'MaShan', col: RED }); ctx.restore(); }
+    if (card(290, 720, 440, 520, seg(t, V('6-1'), V('6-1') + .4), { border: '#2f4a6b', rot: -.02 })) { text('领事', 0, -170, 66, { font: 'MaShan', col: '#2f4a6b' }); if (t > V('6-2')) { text('章程写得清清楚楚', 0, -40, 34, { a: seg(t, V('6-2'), V('6-2') + .4), weight: 600 }); text('华人不许住！', 0, 50, 54, { a: seg(t, V('6-2') + 1.6, V('6-2') + 2), font: 'MaShan', col: STAMP }); } ctx.restore(); }
+    if (card(790, 720, 440, 520, seg(t, V('6-3'), V('6-3') + .4), { rot: .02 })) { text('洋行老板', 0, -170, 60, { font: 'MaShan', col: RED }); const its = [['有钱的', '带资金', 0], ['没钱的', '出力气', 1.6], ['房子', '租得出价钱', 3.4]]; its.forEach(([a, b, d], i) => { const p = seg(t, V('6-4') + d, V('6-4') + d + .4); text(`${a} → ${b}`, 0, -60 + i * 90, 38, { a: p, weight: 600 }); }); text('欢迎！', 0, 210, 54, { a: seg(t, V('6-5'), V('6-5') + .4), font: 'MaShan', col: RED }); ctx.restore(); }
     // 钱说了算：天平往洋行那边沉
-    if (t > V('6-6')) { const tilt = .28 * eio(seg(t, V('6-6') + .4, V('6-6') + 1.6)), a = ss(seg(t, V('6-6'), V('6-6') + .4)); ctx.save(); ctx.globalAlpha = a; ctx.translate(540, 1200); ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, 220); ctx.moveTo(-90, 220); ctx.lineTo(90, 220); ctx.stroke(); ctx.rotate(tilt); ctx.beginPath(); ctx.moveTo(-300, 0); ctx.lineTo(300, 0); ctx.stroke(); for (const [x, lab, col] of [[-300, '规矩', '#2f4a6b'], [300, '钱', RED]]) { ctx.save(); ctx.translate(x, 0); ctx.rotate(-tilt); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-60, 90); ctx.moveTo(0, 0); ctx.lineTo(60, 90); ctx.moveTo(-80, 90); ctx.lineTo(80, 90); ctx.stroke(); text(lab, 0, 70, 46, { font: 'MaShan', col }); ctx.restore(); } ctx.restore(); }
+    if (t > V('6-6')) { const tilt = .28 * eio(seg(t, V('6-6') + .4, V('6-6') + 1.6)), a = ss(seg(t, V('6-6'), V('6-6') + .4)); ctx.save(); ctx.globalAlpha = a; ctx.translate(540, 1230); ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, 220); ctx.moveTo(-90, 220); ctx.lineTo(90, 220); ctx.stroke(); ctx.rotate(tilt); ctx.beginPath(); ctx.moveTo(-300, 0); ctx.lineTo(300, 0); ctx.stroke(); for (const [x, lab, col] of [[-300, '规矩', '#2f4a6b'], [300, '钱', RED]]) { ctx.save(); ctx.translate(x, 0); ctx.rotate(-tilt); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-60, 90); ctx.moveTo(0, 0); ctx.lineTo(60, 90); ctx.moveTo(-80, 90); ctx.lineTo(80, 90); ctx.stroke(); text(lab, 0, 70, 46, { font: 'MaShan', col }); ctx.restore(); } ctx.restore(); }
   } else {
     // 修订章程：华洋分居划掉 → 华洋杂居
     if (card(540, 860, 900, 860, seg(t, V('6-7'), V('6-7') + .5), { rot: -.008 })) {
@@ -346,7 +345,7 @@ function shot7(t) {
     const a = ss(seg(t, V('7-5') + .8, V('7-5') + 1.5));
     const toPhoto = ss(seg(t, V('7-8') - .2, V('7-8') + .6));
     // 石库门门框特写（示意）
-    ctx.save(); ctx.globalAlpha = a * (1 - toPhoto * .75);
+    ctx.save(); ctx.globalAlpha = a * (1 - toPhoto * .88);
     const sc = lerp(1.5, 1.2, seg(t, V('7-5') + .8, V('7-8')));
     ctx.translate(540, 1150); ctx.scale(sc, sc); ctx.translate(-540, -1150);
     const u = shikumenUnit(290, 1240, 500, 640, { col: .35 });
@@ -355,7 +354,7 @@ function shot7(t) {
       ctx.save(); ctx.globalAlpha = a * (1 - toPhoto);
       hand('砖木结构', 540, 1420, 56, seg(t, V('7-5') + 1.5, V('7-5') + 2.3) * (1 - seg(t, V('7-6') - .3, V('7-6'))), { font: 'MaShan', col: RED, align: 'center' });
       if (t > V('7-6')) { hand('石头门框', 90, 1500, 50, seg(t, V('7-6'), V('7-6') + .8), { font: 'MaShan', col: RED }); hand('乌漆木门', 640, 1500, 50, seg(t, V('7-6') + 1.4, V('7-6') + 2.2), { font: 'MaShan', col: RED }); }
-      if (t > V('7-7')) { if (card(540, 470, 720, 200, seg(t, V('7-7'), V('7-7') + .4))) { const sw = seg(t, V('7-7') + 3.0, V('7-7') + 3.5); text('石', -150, 34, 96, { font: 'MaShan' }); text('箍', 0, 34, 96, { font: 'MaShan', a: 1 - sw, col: '#5a4532' }); text('库', 0, 34, 96, { font: 'MaShan', a: sw, col: RED }); text('门', 150, 34, 96, { font: 'MaShan' }); ctx.restore(); } }
+      if (t > V('7-7')) { if (card(540, 350, 720, 190, seg(t, V('7-7'), V('7-7') + .4))) { const sw = seg(t, V('7-7') + 3.0, V('7-7') + 3.5); text('石', -150, 34, 96, { font: 'MaShan' }); text('箍', 0, 34, 96, { font: 'MaShan', a: 1 - sw, col: '#5a4532' }); text('库', 0, 34, 96, { font: 'MaShan', a: sw, col: RED }); text('门', 150, 34, 96, { font: 'MaShan' }); ctx.restore(); } }
       ctx.restore(); tagAt(SW - 170, 160, a * (1 - toPhoto));
     }
     // 兴仁里旧照：原图 410×300，只放到 1.3 倍，小幅面
@@ -376,7 +375,7 @@ function shot8(t) {
   // 门后头：逃进租界的那些人（淡淡的影子）
   if (t > V('8-5')) { const a = ss(seg(t, V('8-5') + .6, V('8-5') + 2.4)) * .55; for (let i = 0; i < 9; i++) person(150 + i * 100, 1290 + (i % 2) * 16, 1.2, { bundle: i % 2 === 0, a, col: '#6a5a48' }); }
   if (t > V('8-3')) { const a = 1 - ss(seg(t, V('8-4'), V('8-4') + .5)); text('约 500 → 两万多', 540, 1380, 60, { font: 'NotoSerif', weight: 700, col: RED, a: a * seg(t, V('8-3'), V('8-3') + .5) }); }
-  if (t > V('8-6')) { if (card(540, 420, 860, 240, seg(t, V('8-6'), V('8-6') + .4))) { text('下一集', 0, -50, 40, { weight: 600, col: RED }); text('一城三治', 0, 40, 84, { font: 'MaShan' }); text('一条马路，三个衙门', 0, 100, 34, { a: seg(t, V('8-7'), V('8-7') + .5), weight: 600 }); ctx.restore(); } }
+  if (t > V('8-6')) { if (card(540, 385, 860, 230, seg(t, V('8-6'), V('8-6') + .4))) { text('下一集', 0, -50, 40, { weight: 600, col: RED }); text('一城三治', 0, 40, 84, { font: 'MaShan' }); text('一条马路，三个衙门', 0, 100, 34, { a: seg(t, V('8-7'), V('8-7') + .5), weight: 600 }); ctx.restore(); } }
   tagAt(SW - 170, 160, 1 - seg(t, 211, 212));
 }
 function endCard(t) {
@@ -393,7 +392,7 @@ function endCard(t) {
 function subtitles(t) {
   const s = SUBS.find(s => t >= s.t0 && t < s.t1); if (!s) return;
   const a = ss(seg(t, s.t0, s.t0 + .15)) * (1 - ss(seg(t, s.t1 - .15, s.t1)));
-  text(s.text, SW / 2, 1620, 54, { col: '#f8f1df', stroke: 'rgba(28,18,8,.88)', sw: 9, weight: 600, a });
+  const ls = s.text.split('\n'); ls.forEach((l, i) => text(l, SW / 2, (ls.length > 1 ? 1586 : 1620) + i * 68, 54, { col: '#f8f1df', stroke: 'rgba(28,18,8,.88)', sw: 9, weight: 600, a }));
 }
 function watermark() { text('熊吉大王', SW - 44, SH - 66, 40, { align: 'right', col: '#f3ead6', stroke: 'rgba(30,20,10,.45)', sw: 5, a: .5, font: 'LongCang' }); }
 

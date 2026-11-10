@@ -33,6 +33,11 @@ for c in cues:
         if cur and len(cur + x) > 15: lines.append(cur); cur = x
         else: cur += x
     if cur: lines.append(cur)
+    # 很短的一行（≤6 字）不单独闪一下：和下一行并成两行字幕
+    k = 0
+    while k < len(lines) - 1:
+        if len(lines[k]) <= 6 and '\n' not in lines[k + 1]: lines[k:k + 2] = [lines[k] + '\n' + lines[k + 1]]
+        else: k += 1
     n = sum(len(x) for x in lines); t = c['t']
     for x in lines: subs.append(dict(t0=round(t, 2), text=x, cue=c['id'])); t += c['est'] * len(x) / n
 for k, s in enumerate(subs):
