@@ -1,0 +1,34 @@
+{
+ "county_map": {
+  "file": "county_map.jpg",
+  "title": "File:City of Shanghai in 1871.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:City_of_Shanghai_in_1871.jpg",
+  "license": "Public domain",
+  "date": "1871",
+  "artist": "应宝时"
+ },
+ "coin": {
+  "file": "coin.png",
+  "title": "File:Taiping Tongbao (太平通寶) - Shanghai Small Swords Society - Liuliang Yu and Hong Yu 01.png",
+  "page": "https://commons.wikimedia.org/wiki/File:Taiping_Tongbao_(%E5%A4%AA%E5%B9%B3%E9%80%9A%E5%AF%B6)_-_Shanghai_Small_Swords_Society_-_Liuliang_Yu_and_Hong_Yu_01.png",
+  "license": "Public domain",
+  "date": "before 1912date QS:P,+1912-00-00T00:00:0",
+  "artist": "Liuliang Yu and Hong Yu."
+ },
+ "xingrenli": {
+  "file": "xingrenli.jpg",
+  "title": "File:Xingrenli a Typical Old-Style Shikumen.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Xingrenli_a_Typical_Old-Style_Shikumen.jpg",
+  "license": "Public domain",
+  "date": "2014-01-22 22:17:41",
+  "artist": "Unknown authorUnknown author"
+ },
+ "customs": {
+  "file": "customs.jpg",
+  "title": "File:Le Tour du monde-01-p148.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Le_Tour_du_monde-01-p148.jpg",
+  "license": "Public domain",
+  "date": "1860-01-01",
+  "artist": "Pierre Eugène Grandsire"
+ }
+}
