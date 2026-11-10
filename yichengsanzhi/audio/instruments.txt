@@ -1,0 +1,7 @@
+accordion
+clarinet
+clarinet_stac
+gran_cassa
+jazz_bass
+piano
+vibraphone
