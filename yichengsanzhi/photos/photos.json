@@ -1,0 +1,26 @@
+{
+ "battle": {
+  "file": "battle.jpg",
+  "title": "File:Battle of Muddy Flat, Shanghai China, 1854 (Romanticized Image).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Battle_of_Muddy_Flat,_Shanghai_China,_1854_(Romanticized_Image).jpg",
+  "license": "Public domain",
+  "date": "1904",
+  "artist": "Trinity College"
+ },
+ "battle_map": {
+  "file": "battle_map.jpg",
+  "title": "File:Map of The Battle of Muddy Flat Shanghai China, 1854 with the French Concession and the Old City of Shanghai.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Map_of_The_Battle_of_Muddy_Flat_Shanghai_China,_1854_with_the_French_Concession_and_the_Old_City_of_Shanghai.jpg",
+  "license": "Public domain",
+  "date": "1904",
+  "artist": "Trinity College"
+ },
+ "mixed_court": {
+  "file": "mixed_court.jpg",
+  "title": "File:A defendant kneeling in a mixed court room, Shanghai, ca.1900–1910.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:A_defendant_kneeling_in_a_mixed_court_room,_Shanghai,_ca.1900%E2%80%931910.jpg",
+  "license": "Public domain",
+  "date": "ca.1900–1910",
+  "artist": "Unknown photographer"
+ }
+}
