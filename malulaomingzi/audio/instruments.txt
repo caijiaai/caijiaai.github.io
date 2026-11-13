@@ -1,0 +1,2 @@
+flute
+(筝、低音弦：core/audio/pluck.py 物理建模合成，无采样)
