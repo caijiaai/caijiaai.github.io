@@ -14,6 +14,8 @@ sh core/render/mux.sh "$HERE/out/video.mp4" "$HERE/audio/mix.wav" "$HERE/out/mas
 ffmpeg -loglevel error -y -i "$HERE/out/video.mp4" -c:v libx264 -preset slow -b:v 3200k -pass 1 -passlogfile "$HERE/out/x264" -an -f null /dev/null
 ffmpeg -loglevel error -y -i "$HERE/out/video.mp4" -i "$HERE/out/master.mp4" -map 0:v -map 1:a -c:v libx264 -preset slow -b:v 3200k -pass 2 -passlogfile "$HERE/out/x264" -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart "$HERE/${NAME}-1080x1920.mp4"
 ffmpeg -loglevel error -y -i "$HERE/${NAME}-1080x1920.mp4" -vf scale=720:1280 -c:v libx264 -preset slow -crf 25 -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart "$HERE/${NAME}-720p.mp4"
+# 无声画面母版（不带音轨），给外部重混用
+ffmpeg -loglevel error -y -i "$HERE/${NAME}-1080x1920.mp4" -map 0:v -c copy -movflags +faststart "$HERE/master1080.mp4"
 # 分轨：24-bit FLAC，长度与成片一致
 for s in stem_music stem_fx_ambience; do ffmpeg -loglevel error -y -i "$HERE/audio/$s.wav" -t 222 -c:a flac -sample_fmt s32 -bits_per_raw_sample 24 "$HERE/$s.flac"; done
 .venv/bin/python core/render/srt.py "$HERE/subs.json" "$HERE/subtitles.srt"
