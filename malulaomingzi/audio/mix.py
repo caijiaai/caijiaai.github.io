@@ -7,7 +7,8 @@ D = os.path.dirname(os.path.abspath(__file__))
 rd = lambda n: sf.read(os.path.join(D, n), dtype='float32')[0]
 rms = lambda x: float(np.sqrt(np.mean(x ** 2)) + 1e-9)
 mus, fx, amb = rd('music.wav'), rd('fx.wav'), rd('amb.wav')
-mus *= .10 / rms(mus); fx = np.stack([hp(fx[:, 0], 90), hp(fx[:, 1], 90)], 1).astype(np.float32); fx *= .035 / rms(fx); amb *= .018 / rms(amb)
+mus *= .10 / rms(mus); fx = np.stack([hp(fx[:, 0], 90), hp(fx[:, 1], 90)], 1).astype(np.float32); fx *= 3.029219011643886;   # 音效增益固定为首版数值（= .035 / rms），这样挪动单个音效时，其余部分逐样本不变
+amb *= .018 / rms(amb)
 mix = mus + fx + amb; mix = np.stack([limit(mix[:, 0], .95), limit(mix[:, 1], .95)], 1).astype(np.float32)
 lim = lambda x: np.stack([limit(x[:, 0], .95), limit(x[:, 1], .95)], 1).astype(np.float32)   # 分轨也不许过 0 dBFS（24-bit FLAC 会削波）
 for n, x in [('mix.wav', mix), ('stem_music.wav', lim(mus)), ('stem_fx_ambience.wav', lim((fx + amb).astype(np.float32)))]: sf.write(os.path.join(D, n), x, SR, subtype='FLOAT')

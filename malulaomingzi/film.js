@@ -279,7 +279,7 @@ function shot6(t) {
   [[720, 6, 11], [980, 6, 12], [1240, 6, 13]].forEach(([y, n, sd], row) => { shopRow(t, y, n, 40, 1000, i => order(row, i), sd); ctx.save(); ctx.strokeStyle = NAVY; ctx.lineWidth = 3.5; ctx.beginPath(); ctx.moveTo(20, y); ctx.lineTo(1060, y); ctx.stroke(); ctx.restore(); });
   hand('不靠名字，靠行当', 540, 440, 64, seg(t, V('6-1') + 1.2, V('6-1') + 2.4), { align: 'center', font: 'MaShan', a: 1 - ss(seg(t, V('6-2') - .3, V('6-2'))) });
   if (t > V('6-2') && t < V('6-3') + .3) { const a = 1 - ss(seg(t, V('6-3') - .2, V('6-3') + .3)); if (card(540, 420, 860, 150, seg(t, V('6-2'), V('6-2') + .4), { a })) { text('1923 · 头一家中国人的汽配店', 0, 20, 50, { font: 'MaShan', col: RED }); ctx.restore(); } }
-  if (t > V('6-3')) { if (card(540, 420, 760, 150, seg(t, V('6-3') + .2, V('6-3') + .6))) { text('1998 · 正式冠名', 0, 22, 62, { font: 'MaShan', col: RED }); ctx.restore(); } }   // 修订：原「1949 · 230 家」卡撤下
+  if (t > T('6-4')) { if (card(540, 420, 760, 150, seg(t, T('6-4'), T('6-4') + .4))) { text('1998 · 正式冠名', 0, 22, 62, { font: 'MaShan', col: RED }); ctx.restore(); } }   // 修订：原「1949 · 230 家」卡撤下；微修：入场点挪到块 6-4 开头（156.19 s）
   // 半个上海的汽车都在这条路上修：小汽车沿街开过
   if (t > V('6-4')) for (let i = 0; i < 5; i++) { const x = ((t - V('6-4')) * 190 + i * 260) % 1400 - 160, y = 1400; ctx.save(); ctx.globalAlpha = ss(seg(t, V('6-4'), V('6-4') + .5)); ctx.fillStyle = NAVY; ctx.beginPath(); ctx.roundRect(x, y - 44, 120, 34, 8); ctx.fill(); ctx.beginPath(); ctx.roundRect(x + 24, y - 70, 66, 30, 8); ctx.fill(); ctx.fillStyle = PAPER; ctx.fillRect(x + 32, y - 64, 22, 18); ctx.fillRect(x + 60, y - 64, 22, 18); ctx.fillStyle = NAVY; for (const wx of [x + 26, x + 94]) { ctx.beginPath(); ctx.arc(wx, y - 8, 13, 0, 6.3); ctx.fill(); } ctx.restore(); }
   ctx.save(); ctx.strokeStyle = NAVY; ctx.lineWidth = 3.5; ctx.beginPath(); ctx.moveTo(20, 1408); ctx.lineTo(1060, 1408); ctx.stroke(); ctx.restore();
@@ -370,14 +370,15 @@ EV.push({ t: 1.2, type: 'unhook' }, { t: 2.0, type: 'hang' });
 { const d2 = CUES.find(c => c.id === '4-2').est, d32 = CUES.find(c => c.id === '3-2').est;
   for (const tt of [V('2-5') + 2.6, V('2-6') + 1.6, V('4-2') + d2 * .22, V('4-2') + d2 * .68, V('4-5')]) EV.push({ t: tt, type: 'flip' });
   for (const k of [.14, .36, .8]) EV.push({ t: V('3-2') + d32 * k, type: 'hang' }); }
-for (const id of ['2-2', '5-2', '6-2', '6-3', '7-2', '7-3']) EV.push({ t: V(id), type: 'card' });
+for (const id of ['2-2', '5-2', '6-2', '7-2', '7-3']) EV.push({ t: V(id), type: 'card' });
+EV.push({ t: T('6-4'), type: 'card', ord: V('6-3') });   // 「1998」字卡的纸响跟着字卡挪到 156.19 s；ord 保留原来的排序位置，这样其他音效的随机数序列不变
 EV.push({ t: V('7-4') + 2.2, type: 'card' });
 EV.push({ t: V('1-4') + .6, type: 'stamp' }, { t: V('2-5'), type: 'stamp' }, { t: 217.2, type: 'stamp' });
 for (let k = 0; k < 17; k++) EV.push({ t: V('6-3') + .8 + k * .19, type: 'light' }); EV.push({ t: V('6-2') + 1.2, type: 'light' });
 EV.push({ t: V('6-4'), type: 'cars', dur: 6 });
 for (const dt of [1.0, 4.6, 9.4, 15.2, 21.0]) EV.push({ t: 163.5 + dt, type: 'wrench' });
 for (let i = 0; i < 3; i++) EV.push({ t: V('8-1') + i * CUES.find(c => c.id === '8-1').est * .26, type: 'hang' });
-EV.sort((a, b) => a.t - b.t);
+EV.sort((a, b) => (a.ord ?? a.t) - (b.ord ?? b.t));
 
 window.DUR = DUR; window.EV = EV; window.render = render;
 window.TEXTS = t => { const s = SUBS.find(s => t >= s.t0 && t < s.t1); return s ? [{ id: 'sub' + s.t0, text: s.text, x0: 80, y0: 1600, x1: 1000, y1: 1760 }] : []; };
